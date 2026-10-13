@@ -9,7 +9,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class PacerBusyError extends Error {
     constructor(waitMs) {
-        super('voice provider budget exhausted for now');
+        super('provider budget exhausted for now');
         this.name = 'PacerBusyError';
         this.retryAfter = Math.ceil(waitMs / 1000);
     }
