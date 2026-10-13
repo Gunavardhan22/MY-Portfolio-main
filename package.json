@@ -1,14 +1,13 @@
 {
   "name": "gunavardhan-portfolio",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Gunavardhan Tigulla's GenAI developer portfolio with a server-side AI voice introduction.",
+  "description": "Tigulla Gunavardhan's portfolio: moonlit 3D scroll experience, spoken introduction, and a grounded \"Ask About Me\" assistant.",
   "license": "UNLICENSED",
   "scripts": {
     "start": "node server/server.js",
     "dev": "node --watch server/server.js",
-    "voice:build": "node scripts/build-voice.js",
-    "voice:check": "node scripts/build-voice.js --dry"
+    "check": "node scripts/check.js"
   },
   "engines": {
     "node": ">=18.17"

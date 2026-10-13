@@ -1,127 +1,126 @@
-# Gunavardhan Tigulla — Portfolio
+# Tigulla Gunavardhan — Portfolio
 
-A responsive GenAI developer portfolio with a floating **Hear About Me** voice assistant. The site is plain HTML, CSS, and JavaScript. A small dependency-free Node.js server hosts it and keeps the AI voice API key on the server.
+A dark, moonlit portfolio with a cinematic 3D scroll experience, a spoken **About Me** introduction, and an optional **Ask About Me** assistant that answers questions from the portfolio's own content.
+
+It's plain HTML, CSS, and JavaScript with no build step. A small dependency-free Node.js server hosts the site and keeps the AI key private.
 
 ```text
-Browser ── GET /api/voice/segment/:n ──▶ Node server ── POST (key from .env) ──▶ Groq TTS (Orpheus)
-   ▲                                        │
-   └──────────── WAV audio ◀── disk cache ◀─┘      (each segment is generated once, then reused)
-```
+Fixed background image → navy veil + moonlight + clouds → WebGL particles & glass panels → content → voice dock
 
-If the AI voice is unavailable (no key, provider error, rate limit, or static hosting without the server), the assistant falls back to the browser's built-in `speechSynthesis` voice and the transcript stays readable.
+Browser ── POST /api/ask {question} ──▶ Node server ── (key from .env) ──▶ Groq chat model
+   ▲                                     │   answers only from content/profile.md
+   └──────── { answer } ◀────────────────┘   then the browser reads it aloud
+```
 
 ## Quick start
 
-Requires **Node.js 18.17+**. There are no npm dependencies to install.
+Requires **Node.js 18.17+**. There are no npm packages to install.
 
 ```bash
-cp .env.example .env        # then put your Groq key in VOICE_API_KEY
-npm start                   # http://localhost:3000
+cp .env.example .env   # optional: add AI_API_KEY to enable "Ask About Me"
+npm start              # http://localhost:3000
+npm run check          # syntax-check every JavaScript file
 ```
 
-Without a key the site works fully and the assistant uses the browser voice.
+Without a key, everything works except the **Ask About Me** button, which stays hidden. The spoken introduction never needs a server or a key.
 
-`npm run dev` restarts the server when files change.
+## Features
 
-## Configure the AI voice (Groq)
+| Feature | Where | Notes |
+| --- | --- | --- |
+| Persistent anime background | `index.html` `.backdrop`, `styles.css` §3, `js/ambient.js` | Fixed layer behind every section. Pointer and scroll parallax, and a veil that deepens over the content for readability. |
+| Ambient effects | `styles.css` §3 | Moon glow, drifting clouds, and CSS dust when WebGL isn't available. All CSS. |
+| 3D depth layer | `js/scene.js` | three.js particles and glass panels. The camera travels forward as you scroll. Loaded after the page is interactive. Pauses in background tabs. |
+| Scroll animations | `js/motion.js` | GSAP ScrollTrigger. The hero recedes into depth, and sections, skills, projects, and contact animate in. All reversible when scrolling up. No scroll hijacking. |
+| Spoken introduction | `js/voice-dock.js`, `content/intro.js` | Browser speech synthesis. The floating button and the hero's "About Me — Listen" button start it, stop it, and restart it from the beginning. |
+| Ask About Me | `js/voice-dock.js`, `server/routes/ask.js`, `server/services/askService.js` | Grounded answers from `content/profile.md`, read aloud. Shown only when the server reports it's configured. |
 
-1. **Create a key** at <https://console.groq.com/keys> and set `VOICE_API_KEY` in `.env`. Never paste it into HTML or JS, or commit it.
-2. **Accept the model terms.** Groq requires an org admin to accept the Orpheus terms once at <https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english>. Until then every request fails with `model_terms_required`. The server log and `npm run voice:build` both print this link.
-3. **Pre-generate the narration** so visitors never wait on the provider:
+### Voice button behaviour
 
-   ```bash
-   npm run voice:check   # show the 26 segments, no API calls
-   npm run voice:build   # generate and cache them in .cache/voice/
-   ```
+- First click starts the introduction. While it plays, the button shows an audio wave and reads **Stop Introduction**.
+- Clicking again stops it immediately (so does **Esc**). Starting again restarts from the beginning.
+- One utterance at a time: overlapping speech is impossible.
+- Voice choice: a natural Indian English voice if installed, then any natural English voice, then the browser default.
+- Speech stops when the visitor leaves the page. Nothing plays automatically.
+- Without speech support, the button reads **Read introduction** and opens the transcript.
 
-   Groq's published limits for Orpheus are tight: 10 requests/min, 1.2K tokens/min, 100 requests/day, and 3.6K tokens/day. The narration is about 3.4K characters, so the build paces itself and takes roughly 3–4 minutes. If it hits a daily limit it stops, keeps its progress, and you can re-run it later. After you edit the narration, only the changed segments are regenerated.
+## Editing content
 
-4. **Choose a voice** with `VOICE_NAME`. The English voices are autumn, diana, hannah, austin, daniel, and troy (the default). Changing the voice or model invalidates the cache automatically.
+| What | File |
+| --- | --- |
+| Spoken introduction | `content/intro.js` (one string per paragraph) |
+| Knowledge the assistant answers from | `content/profile.md`. It's read on every question, so no restart is needed. |
+| Page text, projects, skills | `index.html` |
+| Background image | `assets/images/moonlit-bg.webp` and `.jpg`; the supplied original is `moonlit-original.png` |
 
-### Environment variables
+Keep `content/profile.md` and `index.html` consistent: the assistant only knows what the profile says.
+
+### Replacing the background image
+
+The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so it looks smoother full-screen, but a higher-resolution original (at least 1920px wide) will look much sharper. Save it as `assets/images/moonlit-bg.webp` and `.jpg`. On phones, the framing that keeps the face above the text is set in `styles.css` (`@media (max-width: 899px) .bg-image`).
+
+## Configuration
 
 | Variable | Default | Purpose |
-|----------|---------|---------|
-| `VOICE_API_KEY` | (none) | Groq API key. Server-side only. |
-| `VOICE_PROVIDER` | `groq` | Adapter in `server/services/voiceProvider.js`. |
-| `VOICE_MODEL` | `canopylabs/orpheus-v1-english` | Groq TTS model. |
-| `VOICE_NAME` | `troy` | Voice persona. |
-| `VOICE_CACHE_DIR` | `.cache/voice` | Generated audio. Not publicly served. |
+| --- | --- | --- |
+| `AI_API_KEY` | (none) | Groq API key for "Ask About Me". Server-side only. `VOICE_API_KEY` from older `.env` files is also accepted. |
+| `AI_PROVIDER` | `groq` | Only `groq` is supported. |
+| `AI_MODEL` | `openai/gpt-oss-20b` | Any Groq chat model. List yours with `GET https://api.groq.com/openai/v1/models`. |
 | `PORT` | `3000` | Server port. |
 | `ALLOWED_ORIGIN` | (empty) | Set only when the page is hosted on a different origin than the API. |
-| `TRUST_PROXY` | `0` | Set `1` behind Render/Railway/Nginx so rate limits see real client IPs. |
+| `TRUST_PROXY` | `0` | Set `1` behind Render, Railway, or Nginx so rate limits see real client IPs. |
 
 ## Security
 
-- **The key stays on the server.** It's read from the environment in `server/services/voiceProvider.js` and never logged or sent to the browser. The tests confirmed no served file contains it.
-- **The endpoint can't be used as a general TTS service.** The browser only asks for a segment *index* (`/api/voice/segment/3`). Text comes from `content/about-me.js` on the server, so nobody can spend your key on their own text.
-- **Only an allowlist of files is served:** `index.html`, `styles.css`, `script.js`, `voice-assistant.js`, `content/about-me.js`, and `assets/`. `.env`, `server/`, `.cache/`, `docs/`, and `legacy/` all return 404, including `../` and encoded-traversal attempts.
-- **Limits:** provider calls are paced under Groq's per-minute limits. Each client gets 60 uncached segment requests per 10 minutes, and identical concurrent requests share one provider call.
-- **Errors:** visitors get generic messages (`voice_busy`, `voice_unavailable`). Server logs show only an error category and HTTP status, never the key or the provider's response body.
-- **Headers:** CSP, `nosniff`, `X-Frame-Options: DENY`, and a strict referrer policy.
-- `.env` and `.cache/` are git-ignored. `.env.example` holds placeholders only.
-
-## Editing the narration
-
-All spoken text lives in **`content/about-me.js`**. The transcript, the AI voice, and the browser fallback all read from it. Keep sentences short and true. Then run `npm run voice:build`.
+- **The key stays on the server.** It's read in `server/services/askService.js` and never logged or sent to the browser. No served file contains it.
+- **Grounded and bounded.** The model sees only `content/profile.md` and the question. It's told to refuse anything off-topic and never to invent experience, metrics, or links. Questions are limited to 3–300 characters and bodies to 2 KB. Answers are capped and stripped of markdown and URLs.
+- **Limits:** 15 questions per visitor per 10 minutes, and provider calls paced under 25 per minute.
+- **Allowlisted files only:** `index.html`, `styles.css`, `script.js`, `content/intro.js`, `js/`, and `assets/`. `.env`, `server/`, `content/profile.md`, `docs/`, and `legacy/` all return 404, including `../` and encoded-traversal attempts.
+- **Headers:** a strict CSP (`script-src 'self'`; three.js and GSAP are vendored in `assets/vendor/`), `nosniff`, `X-Frame-Options: DENY`.
 
 ## Project structure
 
 ```text
 .
-├── index.html              # page: header, hero, skills, projects, workflow, journey, contact, voice panel
-├── styles.css              # design tokens, components, responsive + reduced-motion rules
-├── script.js               # menu, smooth scroll, progress bar, active nav, reveal, back-to-top, copy email
-├── voice-assistant.js      # voice panel: AI audio playback, browser-voice fallback, controls, transcript
-├── content/about-me.js     # the narration (single source of truth)
+├── index.html               # hero, about, skills, projects, workflow, education, contact, voice dock
+├── styles.css               # tokens, backdrop layers, glass UI, responsive + reduced-motion rules
+├── script.js                # menu, smooth anchors, progress bar, active nav, back-to-top, copy email
+├── js/
+│   ├── ambient.js           # background parallax + veil depth
+│   ├── scene.js             # WebGL particles and glass panels (lazy-loads three.js)
+│   ├── motion.js            # GSAP ScrollTrigger animations, with a fallback
+│   └── voice-dock.js        # spoken introduction + Ask About Me
+├── content/
+│   ├── intro.js             # the spoken introduction (edit this)
+│   └── profile.md           # the assistant's only knowledge source (edit this; not served)
+├── assets/
+│   ├── images/              # background image (original + upscaled)
+│   ├── vendor/              # three.js r128, GSAP 3.12.5 + ScrollTrigger
+│   ├── resume.pdf
+│   └── favicon.svg, diagrams/
 ├── server/
-│   ├── server.js           # static allowlist + /api/voice routing + security headers
-│   ├── routes/voice.js     # GET /api/voice/manifest, GET /api/voice/segment/:n
-│   ├── services/
-│   │   ├── voiceProvider.js  # Groq adapter (the only provider-specific code)
-│   │   ├── voiceService.js   # segments + cache + pacing + in-flight de-duplication
-│   │   ├── audioCache.js     # memory + disk cache keyed by provider/model/voice/text
-│   │   └── pacer.js          # per-minute request/character budget
-│   └── lib/                  # .env loader, narration segmenter
-├── scripts/build-voice.js  # pre-generates the audio (npm run voice:build)
-├── assets/                 # favicon, résumé (add resume.pdf), diagrams
-├── docs/                   # content inventory + testing checklist
-├── .env.example
-└── package.json
+│   ├── server.js            # static allowlist, /api/ask routing, security headers
+│   ├── routes/ask.js        # GET /api/ask/status, POST /api/ask
+│   ├── services/askService.js, pacer.js
+│   └── lib/env.js, rateLimit.js
+├── scripts/check.js         # npm run check
+├── docs/                    # content inventory + testing checklist
+└── 3d-portfolio/            # separate 3D-artist template site
 ```
 
 ## Deploy
 
-### Option A: one Node service (recommended)
+**One Node service (recommended):** Render, Railway, Fly.io, or a VPS. Start command `npm start`, with no build step. Set `AI_API_KEY` (and `TRUST_PROXY=1` on Render or Railway).
 
-Use Render, Railway, Fly.io, or any VPS.
-
-- Start command: `npm start`. There's no build step.
-- Environment: `VOICE_API_KEY`, plus `TRUST_PROXY=1` on Render and Railway.
-- After the first deploy, open the site once and play the introduction, or run `npm run voice:build` in the service shell, to fill the cache.
-- **Ephemeral disks** (Render's free tier, for example) lose `.cache/` on every deploy, and regenerating costs most of a day's free TTS quota. Either attach a persistent disk and point `VOICE_CACHE_DIR` at it, or intentionally commit the generated audio: set `VOICE_CACHE_DIR=voice-cache`, run `npm run voice:build`, and commit `voice-cache/`. The audio is still served only through `/api/voice/*`, and with a complete cache the server doesn't even need the key.
-
-### Option B: static host + separate API
-
-You can put the page on GitHub Pages, Netlify, or similar, and deploy the server (Option A) separately for the voice:
-
-1. In `index.html`, set `<meta name="voice-api-base" content="https://your-api.example.com">`.
-2. On the server, set `ALLOWED_ORIGIN=https://your-static-site.example.com`.
-
-If you skip the server entirely, the site still works and the assistant uses the browser voice.
+**Static host only (GitHub Pages, Netlify):** everything works, including the spoken introduction, except Ask About Me, which hides itself. To add it, deploy the server separately, set `<meta name="api-base" content="https://your-api.example.com">` in `index.html`, and set `ALLOWED_ORIGIN` on the server.
 
 After deploying, add a canonical URL, `og:url`, and `og:image` to `index.html`.
 
 ## Before launch
 
-See [`docs/content-inventory.md`](docs/content-inventory.md). In short:
+See [`docs/content-inventory.md`](docs/content-inventory.md). The main items:
 
-1. Accept the Orpheus terms in the Groq console, then run `npm run voice:build`.
-2. Rotate the Groq key, since it was shared in a chat, and update `.env`. Also rotate the Gemini keys that are hardcoded in two project repos.
-3. Add `assets/resume.pdf`.
-4. Add the LinkedIn URL and the AI Resume Analyzer repository URL.
-5. Confirm degree status.
-
-## Testing
-
-Run `npm start` and open <http://localhost:3000>. [`docs/testing-checklist.md`](docs/testing-checklist.md) lists what was verified and how.
+1. **Background image rights.** The character artwork is likely copyrighted fan art. Check that you're allowed to use it on a public site, or credit the artist.
+2. **Rotate the Groq key**, which was shared in a chat earlier, and update `.env`.
+3. Add the LinkedIn URL, and the AI Resume Analyzer and Seat Seeker repository URLs when they're public.
+4. Resolve the résumé/site differences listed in the inventory (SHAP vs LIME).

@@ -1,8 +1,9 @@
 /*
    Gunavardhan Tigulla — Portfolio
    Site interactions: mobile menu, smooth anchor scrolling, scroll progress,
-   active navigation, back-to-top, reveal on scroll, copy-email, footer year.
-   The voice assistant lives in voice-assistant.js.
+   active navigation, back-to-top, copy-email, footer year.
+   Scroll animations: js/motion.js. Background: js/ambient.js and js/scene.js.
+   Voice introduction and "Ask About Me": js/voice-dock.js.
    No dependencies. Never put API keys or secrets in this file.
 */
 
@@ -148,42 +149,7 @@
     if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
 
-    // ---------- 4. Reveal on scroll ----------
-    // Content is visible by default; it is only hidden (html.js-reveal) when the
-    // browser supports IntersectionObserver and the visitor allows motion.
-    const revealEls = Array.from(document.querySelectorAll('.reveal'));
-
-    if (revealEls.length && 'IntersectionObserver' in window && !reduceMotion.matches) {
-        // Anything already on screen stays visible: no flash on load.
-        const fold = window.innerHeight;
-        revealEls.forEach((el) => {
-            if (el.getBoundingClientRect().top < fold) el.classList.add('is-visible');
-        });
-        root.classList.add('js-reveal');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-
-        revealEls.forEach((el) => {
-            if (!el.classList.contains('is-visible')) observer.observe(el);
-        });
-
-        // If the visitor turns on reduced motion mid-visit, show everything.
-        reduceMotion.addEventListener('change', (e) => {
-            if (e.matches) {
-                observer.disconnect();
-                revealEls.forEach((el) => el.classList.add('is-visible'));
-            }
-        });
-    }
-
-    // ---------- 5. Copy email with a clear fallback ----------
+    // ---------- 4. Copy email with a clear fallback ----------
     const copyBtn = document.getElementById('copy-email');
     const emailLink = document.getElementById('email-link');
     const copyStatus = document.getElementById('copy-status');
@@ -250,7 +216,7 @@
         });
     }
 
-    // ---------- 6. Current year in the footer ----------
+    // ---------- 5. Current year in the footer ----------
     const year = document.getElementById('year');
     if (year) year.textContent = String(new Date().getFullYear());
 })();

@@ -4,27 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gunavardhan Tigulla | Generative AI Developer</title>
+    <title>Tigulla Gunavardhan | Software Developer · AI/ML Engineer</title>
     <meta name="description"
-        content="Portfolio of Gunavardhan Tigulla, a Computer Science and Engineering candidate building Python, AI/ML, and LLM-powered applications. Listen to a spoken introduction, explore projects, and get in touch.">
-    <meta name="author" content="Gunavardhan Tigulla">
-    <meta name="theme-color" content="#FFFFFF">
-    <!-- Leave empty when the voice API runs on the same server as this page (npm start).
-         If the page is hosted elsewhere, set the API origin, e.g. https://your-voice-api.onrender.com -->
-    <meta name="voice-api-base" content="">
+        content="Portfolio of Tigulla Gunavardhan, an aspiring software developer and AI/ML engineer building Python, backend, and LLM-powered applications. Listen to a spoken introduction, explore projects, and get in touch.">
+    <meta name="author" content="Tigulla Gunavardhan">
+    <meta name="theme-color" content="#070a16">
+    <!-- Leave empty when the API runs on the same server as this page (npm start).
+         If the page is hosted elsewhere, set the API origin, e.g. https://your-api.onrender.com -->
+    <meta name="api-base" content="">
 
     <!-- Open Graph (add og:url, og:image and a canonical link once deployed to a stable domain) -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Gunavardhan Tigulla | Generative AI Developer">
+    <meta property="og:title" content="Tigulla Gunavardhan | Software Developer · AI/ML Engineer">
     <meta property="og:description"
-        content="Python, AI/ML, and LLM-powered application projects, with architecture and design choices explained.">
+        content="Python, backend, and AI/ML projects, with a spoken introduction and an assistant that answers questions about my work.">
 
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/images/moonlit-bg.webp" as="image" type="image/webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
@@ -33,17 +34,30 @@
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Scroll progress -->
+    <!-- Fixed background → ambient effects → 3D scene. Content scrolls above it. -->
+    <div class="backdrop" aria-hidden="true">
+        <div class="bg-image" id="bg-image"></div>
+        <div class="bg-veil" id="bg-veil"></div>
+        <div class="moon-glow"></div>
+        <div class="clouds">
+            <span class="cloud cloud--1"></span>
+            <span class="cloud cloud--2"></span>
+            <span class="cloud cloud--3"></span>
+        </div>
+        <div class="dust"></div>
+        <canvas class="scene-canvas" id="scene-canvas"></canvas>
+    </div>
+
     <div class="scroll-progress" aria-hidden="true"><span class="scroll-progress-bar" id="scroll-progress"></span></div>
 
     <!-- ========== Header ========== -->
     <header class="site-header">
         <div class="container header-inner">
-            <a class="brand" href="#hero" aria-label="Gunavardhan, Generative AI Developer: back to top">
-                <span class="brand-mark" aria-hidden="true">G.</span>
+            <a class="brand" href="#hero" aria-label="Tigulla Gunavardhan: back to top">
+                <span class="brand-mark" aria-hidden="true">G</span>
                 <span class="brand-text">
                     <span class="brand-name">GUNAVARDHAN</span>
-                    <span class="brand-sub">GENERATIVE AI DEVELOPER</span>
+                    <span class="brand-sub">SOFTWARE · AI/ML</span>
                 </span>
             </a>
 
@@ -60,7 +74,7 @@
                     <li><a class="nav-link" href="#skills">Skills</a></li>
                     <li><a class="nav-link" href="#projects">Projects</a></li>
                     <li><a class="nav-link" href="#workflow">Workflow</a></li>
-                    <li><a class="nav-link" href="#journey">Journey</a></li>
+                    <li><a class="nav-link" href="#journey">Education</a></li>
                     <li><a class="nav-link" href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -71,220 +85,274 @@
 
         <!-- ========== Hero ========== -->
         <section class="hero" id="hero" aria-labelledby="hero-title">
-            <div class="container hero-grid">
-                <div class="hero-copy">
-                    <p class="eyebrow">
+            <div class="container hero-layout">
+                <div class="hero-inner" id="hero-inner">
+                    <p class="eyebrow hero-anim">
                         <span class="status-dot" aria-hidden="true"></span>
-                        OPEN TO ENTRY-LEVEL GENAI / AI ROLES • HYDERABAD, INDIA
+                        Open to entry-level software &amp; AI/ML roles · Hyderabad, India
                     </p>
                     <h1 class="hero-title" id="hero-title">
-                        Building useful AI experiences with code &amp; <span class="accent">curiosity.</span>
+                        <span class="hero-line hero-anim">Tigulla</span>
+                        <span class="hero-line hero-line--accent hero-anim">Gunavardhan</span>
                     </h1>
-                    <p class="hero-text">
-                        I'm Gunavardhan Tigulla, a Computer Science and Engineering candidate interested in Python,
-                        AI/ML, LLM-powered applications, and backend engineering. I build projects to understand how
-                        software and AI can solve practical problems.
+                    <p class="hero-role hero-anim">Aspiring Software Developer <span aria-hidden="true">|</span>
+                        <span class="sr-only">and</span> AI/ML Engineer</p>
+                    <p class="hero-text hero-anim">
+                        I build practical applications with Python, APIs, and machine learning. I'm most interested in
+                        where software and AI meet: models served behind reliable APIs, and answers people can
+                        actually understand.
                     </p>
-                    <div class="hero-actions">
-                        <a class="btn btn--primary" href="#projects">Explore Projects</a>
-                        <a class="btn btn--secondary" href="assets/resume.pdf" download>Download Résumé</a>
+                    <div class="hero-actions hero-anim">
+                        <a class="btn btn--primary" href="#projects">Explore My Work</a>
+                        <button class="btn btn--glass intro-btn" type="button" data-intro-toggle aria-pressed="false">
+                            <span class="intro-btn-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                            <span data-intro-label data-idle="About Me — Listen" data-active="Stop Introduction">About Me
+                                — Listen</span>
+                        </button>
                     </div>
-                    <p class="hero-hint">
-                        <span aria-hidden="true">🎙</span> Prefer to listen? Use <strong>Hear About Me</strong> at the
-                        bottom-left for a four-minute spoken introduction.
-                    </p>
-                </div>
-
-                <div class="hero-visual" aria-hidden="true">
-                    <div class="editor">
-                        <div class="editor-bar">
-                            <span class="editor-dots"><i></i><i></i><i></i></span>
-                            <span class="editor-file">profile.json</span>
-                        </div>
-<pre class="editor-body"><code><span class="c-p">{</span>
-  <span class="c-k">focus</span><span class="c-p">:</span> <span class="c-s">"Generative AI"</span><span class="c-p">,</span>
-  <span class="c-k">interests</span><span class="c-p">: [</span><span class="c-s">"RAG"</span><span class="c-p">,</span> <span class="c-s">"LLM apps"</span><span class="c-p">,</span> <span class="c-s">"AI APIs"</span><span class="c-p">],</span>
-  <span class="c-k">principle</span><span class="c-p">:</span> <span class="c-s">"Evaluate before shipping"</span>
-<span class="c-p">}</span><span class="cursor"></span></code></pre>
-                    </div>
-                    <span class="float-tag float-tag--1">Python</span>
-                    <span class="float-tag float-tag--2">LLMs</span>
-                    <span class="float-tag float-tag--3">RAG</span>
+                    <a class="hero-resume hero-anim" href="assets/resume.pdf"
+                        download="Gunavardhan_Tigulla_Resume.pdf">Download résumé (PDF)</a>
                 </div>
             </div>
-        </section>
-
-        <!-- ========== Technology strip ========== -->
-        <section class="ticker" id="ticker" aria-label="Focus areas">
-            <ul class="container ticker-list">
-                <li>PYTHON</li>
-                <li>GENERATIVE AI</li>
-                <li>LLM APPLICATIONS</li>
-                <li>RAG</li>
-                <li>REST APIs</li>
-                <li>MACHINE LEARNING</li>
-            </ul>
+            <a class="scroll-cue" href="#about" aria-label="Scroll to About Me"><span></span></a>
         </section>
 
         <!-- ========== About ========== -->
         <section class="section" id="about" aria-labelledby="about-title">
-            <div class="container about-grid">
-                <div class="section-head reveal">
-                    <p class="section-label">About</p>
-                    <h2 class="section-title" id="about-title">From machine learning models to useful GenAI
-                        applications.</h2>
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <p class="section-label">About Me</p>
+                    <h2 class="section-title" id="about-title">From machine learning models to useful, reliable
+                        software.</h2>
                 </div>
-                <div class="about-copy reveal">
-                    <p>
-                        I'm studying Computer Science and Engineering at SRM Institute of Science and Technology
-                        (2022–2026). I started with machine learning and deep learning: cleaning data, training models,
-                        and finding out where they fail. The more I built, the more I cared about what happens
-                        <em>around</em> the model: the API that serves it, the checks on its output, and whether a
-                        person can understand the answer.
-                    </p>
-                    <p>
-                        In my <a href="#projects">intrusion-detection project</a>, for example, I trained CNN and LSTM
-                        models, used a GAN to add samples for rare attacks, and added a Gemini step that explains each
-                        prediction in plain language. Wiring a model and an LLM together taught me more about prompts,
-                        failure handling, and secret management than any tutorial.
-                    </p>
-                    <p>
-                        Now I'm focused on <strong>building</strong> LLM-powered applications in Python,
-                        <strong>evaluating</strong> them before trusting them, and learning to
-                        <strong>deploy</strong> them behind reliable APIs.
-                    </p>
+
+                <div class="about-grid">
+                    <div class="glass about-copy" data-reveal>
+                        <p>
+                            I'm a Computer Science and Engineering student at SRM Institute of Science and Technology
+                            (2022–2026). I started with machine learning and deep learning: cleaning data, training
+                            models, and finding out where they fail. The more I built, the more I cared about what
+                            happens <em>around</em> the model: the API that serves it, the database behind it, and
+                            whether a person can understand the answer.
+                        </p>
+                        <p>
+                            In my <a href="#projects">intrusion-detection project</a>, I trained CNN and LSTM models,
+                            used a GAN to add samples for rare attacks, and added a Gemini step that explains each
+                            prediction in plain language. Wiring a model and an LLM together taught me more about
+                            prompts, failure handling, and secret management than any tutorial.
+                        </p>
+                        <p>
+                            Now I'm focused on <strong>building</strong> LLM-powered applications in Python,
+                            <strong>evaluating</strong> them before trusting them, and <strong>deploying</strong> them
+                            behind reliable APIs. I'm looking for a team where I can contribute as a fresher, learn
+                            from experienced developers, and grow as an engineer.
+                        </p>
+                    </div>
+
+                    <aside class="glass about-facts" data-reveal aria-label="Quick facts">
+                        <dl>
+                            <div>
+                                <dt>Based in</dt>
+                                <dd>Hyderabad, India</dd>
+                            </div>
+                            <div>
+                                <dt>Studying</dt>
+                                <dd>B.Tech, Computer Science and Engineering · SRM IST, 2022–2026</dd>
+                            </div>
+                            <div>
+                                <dt>Focus</dt>
+                                <dd>Backend engineering · AI/ML · Generative AI</dd>
+                            </div>
+                            <div>
+                                <dt>Looking for</dt>
+                                <dd>Entry-level software, backend, and AI/ML roles</dd>
+                            </div>
+                        </dl>
+                    </aside>
                 </div>
             </div>
         </section>
 
         <!-- ========== Skills ========== -->
-        <section class="section section--alt" id="skills" aria-labelledby="skills-title">
+        <section class="section" id="skills" aria-labelledby="skills-title">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="section-label">Skills</p>
-                    <h2 class="section-title" id="skills-title">Technical skills</h2>
-                    <p class="section-intro">Grouped by the work they enable. Items under <em>Currently learning</em>
-                        are areas I'm studying, not skills I've shipped in a project yet.</p>
+                <div class="section-head" data-reveal>
+                    <p class="section-label">Technical Skills</p>
+                    <h2 class="section-title" id="skills-title">Grouped by the work they enable.</h2>
+                    <p class="section-intro">Items under <em>Currently learning</em> are areas I'm studying, not
+                        skills I've shipped in a project yet.</p>
                 </div>
 
-                <div class="skills-grid">
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">&lt;/&gt;</span>
-                        <h3>Programming Languages</h3>
-                        <ul class="tag-list">
-                            <li class="tag">Python</li>
-                            <li class="tag">Java</li>
-                            <li class="tag">SQL</li>
-                            <li class="tag">JavaScript</li>
-                        </ul>
-                        <p class="skill-note"><span>Web frameworks</span> React · Angular</p>
-                    </article>
-
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">✦</span>
-                        <h3>Generative AI and LLM Applications</h3>
-                        <ul class="tag-list">
-                            <li class="tag">Gemini API</li>
-                            <li class="tag">Prompt design</li>
-                            <li class="tag">Chat history</li>
-                            <li class="tag">LLM explanations</li>
-                        </ul>
-                        <p class="skill-note"><span>Currently learning</span> RAG · Embeddings · Vector search ·
-                            Output evaluation</p>
-                    </article>
-
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">◎</span>
-                        <h3>Machine Learning and NLP</h3>
-                        <ul class="tag-list">
-                            <li class="tag">TensorFlow / Keras</li>
-                            <li class="tag">CNN · LSTM</li>
-                            <li class="tag">GANs</li>
-                            <li class="tag">scikit-learn</li>
-                            <li class="tag">Pandas · NumPy</li>
-                            <li class="tag">spaCy · Transformers</li>
-                            <li class="tag">LIME</li>
-                        </ul>
-                        <p class="skill-note"><span>Currently learning</span> SHAP</p>
-                    </article>
-
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">⇄</span>
-                        <h3>Backend Development and APIs</h3>
-                        <ul class="tag-list">
-                            <li class="tag">Flask</li>
-                            <li class="tag">FastAPI</li>
-                            <li class="tag">REST APIs</li>
-                            <li class="tag">Node.js</li>
-                            <li class="tag">Spring Boot</li>
-                            <li class="tag">Streamlit</li>
-                        </ul>
-                    </article>
-
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">▤</span>
-                        <h3>Databases</h3>
-                        <ul class="tag-list">
-                            <li class="tag">MySQL</li>
-                            <li class="tag">PostgreSQL</li>
-                            <li class="tag">MongoDB</li>
-                            <li class="tag">JDBC</li>
-                        </ul>
-                    </article>
-
-                    <article class="card card--hover skill-card reveal">
-                        <span class="skill-icon" aria-hidden="true">⚙</span>
-                        <h3>Tools, Cloud, and Deployment</h3>
-                        <ul class="tag-list">
-                            <li class="tag">Git / GitHub</li>
-                            <li class="tag">Docker</li>
-                            <li class="tag">Jupyter</li>
-                        </ul>
-                        <p class="skill-note"><span>Currently learning</span> AWS fundamentals</p>
-                    </article>
-                </div>
+                <ul class="skills-grid" role="list">
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16" /></svg>
+                            </span>
+                            <h3>Languages</h3>
+                            <ul class="tag-list">
+                                <li class="tag">Python</li>
+                                <li class="tag">Java</li>
+                                <li class="tag">SQL</li>
+                                <li class="tag">JavaScript</li>
+                                <li class="tag">TypeScript</li>
+                            </ul>
+                            <p class="skill-note"><span>Core CS</span> OOP · Data structures &amp; algorithms · DBMS</p>
+                        </article>
+                    </li>
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="2" /><rect x="3" y="14" width="18" height="7" rx="2" /><path d="M7 6.5h.01M7 17.5h.01" /></svg>
+                            </span>
+                            <h3>Backend, APIs &amp; Web</h3>
+                            <ul class="tag-list">
+                                <li class="tag">Flask</li>
+                                <li class="tag">FastAPI</li>
+                                <li class="tag">REST APIs</li>
+                                <li class="tag">Spring Boot</li>
+                                <li class="tag">Node.js</li>
+                                <li class="tag">React</li>
+                                <li class="tag">Angular</li>
+                                <li class="tag">Streamlit</li>
+                            </ul>
+                        </article>
+                    </li>
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" /></svg>
+                            </span>
+                            <h3>Generative AI &amp; LLM Apps</h3>
+                            <ul class="tag-list">
+                                <li class="tag">LangChain</li>
+                                <li class="tag">LangGraph</li>
+                                <li class="tag">RAG</li>
+                                <li class="tag">Gemini API</li>
+                                <li class="tag">Prompt engineering</li>
+                                <li class="tag">ChromaDB</li>
+                            </ul>
+                            <p class="skill-note"><span>Currently learning</span> LLM output evaluation</p>
+                        </article>
+                    </li>
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M9.5 3a3.5 3.5 0 0 0-3.4 4.3A3.5 3.5 0 0 0 5 14a3.5 3.5 0 0 0 4.5 5.4V3zM14.5 3a3.5 3.5 0 0 1 3.4 4.3A3.5 3.5 0 0 1 19 14a3.5 3.5 0 0 1-4.5 5.4V3z" /></svg>
+                            </span>
+                            <h3>Machine Learning &amp; NLP</h3>
+                            <ul class="tag-list">
+                                <li class="tag">TensorFlow / Keras</li>
+                                <li class="tag">CNN · LSTM</li>
+                                <li class="tag">GANs</li>
+                                <li class="tag">scikit-learn</li>
+                                <li class="tag">Pandas · NumPy</li>
+                                <li class="tag">spaCy · Transformers</li>
+                                <li class="tag">LIME</li>
+                            </ul>
+                            <p class="skill-note"><span>Currently learning</span> SHAP</p>
+                        </article>
+                    </li>
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3" /><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" /></svg>
+                            </span>
+                            <h3>Databases</h3>
+                            <ul class="tag-list">
+                                <li class="tag">MySQL</li>
+                                <li class="tag">PostgreSQL</li>
+                                <li class="tag">MongoDB</li>
+                                <li class="tag">ChromaDB</li>
+                                <li class="tag">JDBC</li>
+                            </ul>
+                        </article>
+                    </li>
+                    <li class="skill-item">
+                        <article class="glass skill-card">
+                            <span class="skill-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5z" /></svg>
+                            </span>
+                            <h3>Tools &amp; Practices</h3>
+                            <ul class="tag-list">
+                                <li class="tag">Git / GitHub</li>
+                                <li class="tag">Docker</li>
+                                <li class="tag">Jupyter</li>
+                                <li class="tag">SDLC</li>
+                                <li class="tag">Agile</li>
+                            </ul>
+                            <p class="skill-note"><span>Currently learning</span> AWS fundamentals</p>
+                        </article>
+                    </li>
+                </ul>
             </div>
         </section>
 
-        <!-- ========== Featured projects ========== -->
+        <!-- ========== Projects ========== -->
         <section class="section" id="projects" aria-labelledby="projects-title">
             <div class="container">
-                <div class="section-head reveal">
+                <div class="section-head" data-reveal>
                     <p class="section-label">Projects</p>
-                    <h2 class="section-title" id="projects-title">Featured projects</h2>
-                    <p class="section-intro">Each card shows the problem, what I built, and its status. None of these
-                        are production systems. Open <em>Project details</em> for how each one works and what's
-                        next.</p>
+                    <h2 class="section-title" id="projects-title">Things I've built.</h2>
+                    <p class="section-intro">None of these are production systems. Each card shows what the project
+                        does, the stack, and its status. Open <em>Project details</em> for how it works.</p>
                 </div>
 
-                <div class="projects-grid">
-                    <!-- 1. Explainable IDS -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview project-preview--shield" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <g fill="#C9D8F6">
-                                    <rect x="6" y="38" width="7" height="20" rx="2" />
-                                    <rect x="17" y="28" width="7" height="30" rx="2" />
-                                    <rect x="28" y="42" width="7" height="16" rx="2" />
-                                    <rect x="39" y="22" width="7" height="36" rx="2" />
-                                </g>
-                                <rect x="50" y="12" width="7" height="46" rx="2" fill="#2868E8" />
-                                <path d="M92 8l18 7v13c0 12-7.5 20.5-18 25-10.5-4.5-18-13-18-25V15l18-7z" fill="#fff"
-                                    stroke="#2868E8" stroke-width="2.5" />
-                                <path d="m84.5 31 5.5 5.5 10-11" fill="none" stroke="#2868E8" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <span class="project-status">Prototype · runs locally</span>
-                        </div>
-                        <div class="project-body">
+                <ul class="projects-grid" role="list">
+                    <!-- AI Resume Analyzer -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">01</span>
+                                <span class="project-status">No public repo yet</span>
+                            </header>
+                            <p class="project-cat">Generative AI · NLP · Backend</p>
+                            <h3>AI-Powered Resume Analyzer</h3>
+                            <p>A Flask REST API that compares a résumé with a job description using NLP and Generative
+                                AI, and returns a match score, structured insights, and suggestions for improving the
+                                résumé.</p>
+                            <ul class="tag-list tag-list--mono" aria-label="Technologies">
+                                <li class="tag">Python</li>
+                                <li class="tag">Flask</li>
+                                <li class="tag">LangChain</li>
+                                <li class="tag">MongoDB</li>
+                                <li class="tag">Docker</li>
+                            </ul>
+                            <details class="project-details">
+                                <summary>Project details</summary>
+                                <dl>
+                                    <div>
+                                        <dt>How it works</dt>
+                                        <dd>Résumé + job description → Flask API → LangChain prompt workflow →
+                                            match insights and role-specific recommendations → stored in MongoDB for
+                                            repeat comparisons.</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Deployment</dt>
+                                        <dd>Containerised with Docker.</dd>
+                                    </div>
+                                </dl>
+                            </details>
+                            <!-- Add the repository link once it is public:
+                            <div class="project-links">
+                                <a class="text-link" href="https://github.com/Gunavardhan22/REPO" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
+                            </div>
+                            -->
+                        </article>
+                    </li>
+
+                    <!-- Explainable IDS -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">02</span>
+                                <span class="project-status">Prototype · runs locally</span>
+                            </header>
                             <p class="project-cat">Deep learning · Cybersecurity · Explainable AI</p>
                             <h3>Explainable Deep Learning Intrusion Detection System</h3>
-                            <p class="project-problem"><span>Problem</span> Rare attacks are hard to detect in
-                                imbalanced network traffic, and analysts can't act on an alert they can't understand.
-                            </p>
-                            <p>CNN and LSTM classifiers trained on UNSW-NB15, with GAN-generated samples for rare
-                                attack classes. Each prediction is explained with LIME, and a Gemini step turns the
-                                explanation into plain language inside a Streamlit app.</p>
+                            <p>CNN and LSTM classifiers trained on UNSW-NB15, with GAN-generated samples for rare attack
+                                classes. Each prediction is explained with LIME, and a Gemini step turns the explanation
+                                into plain language inside a Streamlit app.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
                                 <li class="tag">TensorFlow / Keras</li>
                                 <li class="tag">GAN</li>
@@ -303,9 +371,8 @@
                                     </div>
                                     <div>
                                         <dt>Data</dt>
-                                        <dd>The public UNSW-NB15 dataset. A GAN generates extra samples for the
-                                            scarce attack classes. Synthetic samples belong in training only, never
-                                            in the test set.</dd>
+                                        <dd>The public UNSW-NB15 dataset. A GAN generates extra samples for the scarce
+                                            attack classes, used in training only, never in the test set.</dd>
                                     </div>
                                     <div>
                                         <dt>Next steps</dt>
@@ -319,69 +386,52 @@
                                     href="https://github.com/Gunavardhan22/Explainable-Deep-Learning-Intrusion-Detection-System-"
                                     target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </li>
 
-                    <!-- 2. AI Resume Analyzer -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <rect x="14" y="6" width="40" height="52" rx="5" fill="#fff" stroke="#C9D8F6"
-                                    stroke-width="2" />
-                                <rect x="21" y="15" width="18" height="4" rx="2" fill="#2868E8" />
-                                <rect x="21" y="25" width="26" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="21" y="32" width="22" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="21" y="39" width="26" height="3" rx="1.5" fill="#C9D8F6" />
-                                <circle cx="88" cy="32" r="20" fill="#fff" stroke="#E4E9F1" stroke-width="6" />
-                                <path d="M88 12a20 20 0 0 1 17.3 30" fill="none" stroke="#2868E8" stroke-width="6"
-                                    stroke-linecap="round" />
-                            </svg>
-                        </div>
-                        <div class="project-body">
-                            <p class="project-cat">NLP · LLM application</p>
-                            <h3>AI Resume Analyzer</h3>
-                            <p class="project-problem"><span>Problem</span> Candidates can't easily tell how well a
-                                résumé matches a specific job description, or what to change.</p>
-                            <p>Compares a résumé with a job description using NLP and returns a compatibility score.
-                            </p>
+                    <!-- Seat Seeker -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">03</span>
+                                <span class="project-status">No public repo yet</span>
+                            </header>
+                            <p class="project-cat">Multi-agent AI · RAG</p>
+                            <h3>Seat Seeker: Intelligent Booking Agent</h3>
+                            <p>A multi-agent booking assistant built with LangGraph that automates seat discovery and
+                                reservation management, with context-aware recommendations from semantic search.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
                                 <li class="tag">Python</li>
-                                <li class="tag">Flask</li>
-                                <li class="tag">React</li>
-                                <li class="tag">NLP</li>
+                                <li class="tag">LangGraph</li>
+                                <li class="tag">LangChain</li>
+                                <li class="tag">ChromaDB</li>
+                                <li class="tag">MySQL</li>
                             </ul>
-                            <!-- Add the repository link once it is public, e.g.
-                            <div class="project-links">
-                                <a class="text-link" href="https://github.com/Gunavardhan22/REPO" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
-                            </div>
-                            -->
-                        </div>
-                    </article>
+                            <details class="project-details">
+                                <summary>Project details</summary>
+                                <dl>
+                                    <div>
+                                        <dt>How it works</dt>
+                                        <dd>LangGraph agents → LangChain tools → semantic search and RAG over ChromaDB
+                                            for recommendations → MySQL for seat availability and reservation
+                                            records.</dd>
+                                    </div>
+                                </dl>
+                            </details>
+                        </article>
+                    </li>
 
-                    <!-- 3. Documentation module extractor -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <rect x="8" y="10" width="38" height="44" rx="5" fill="#fff" stroke="#C9D8F6"
-                                    stroke-width="2" />
-                                <rect x="15" y="18" width="24" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="15" y="25" width="20" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="15" y="32" width="24" height="3" rx="1.5" fill="#C9D8F6" />
-                                <path d="M50 32h14" stroke="#2868E8" stroke-width="2.5" stroke-linecap="round" />
-                                <rect x="70" y="8" width="42" height="12" rx="4" fill="#2868E8" />
-                                <rect x="78" y="26" width="34" height="10" rx="4" fill="#EDF4FF" stroke="#C9D8F6" />
-                                <rect x="78" y="42" width="34" height="10" rx="4" fill="#EDF4FF" stroke="#C9D8F6" />
-                                <path d="M74 20v27h4M74 31h4" fill="none" stroke="#C9D8F6" stroke-width="2" />
-                            </svg>
-                            <span class="project-status">Prototype · has tests</span>
-                        </div>
-                        <div class="project-body">
+                    <!-- Documentation module extractor -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">04</span>
+                                <span class="project-status">Prototype · has tests</span>
+                            </header>
                             <p class="project-cat">NLP · Backend · Python</p>
                             <h3>Documentation Module Extractor</h3>
-                            <p class="project-problem"><span>Problem</span> Large documentation sites are hard to
-                                scan for what a product actually does.</p>
-                            <p>Crawls documentation pages, groups them into modules and submodules, and writes a
-                                short summary of each, available through an API, a web UI, and a CLI.</p>
+                            <p>Crawls documentation pages, groups them into modules and submodules, and writes a short
+                                summary of each, available through an API, a web UI, and a CLI.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
                                 <li class="tag">FastAPI</li>
                                 <li class="tag">Streamlit</li>
@@ -394,14 +444,14 @@
                                 <dl>
                                     <div>
                                         <dt>How it works</dt>
-                                        <dd>Crawler → HTML parser → module inference → summariser. DistilBART
-                                            summaries when the model is available, with a spaCy-based heuristic
-                                            fallback when it isn't.</dd>
+                                        <dd>Crawler → HTML parser → module inference → summariser. DistilBART summaries
+                                            when the model is available, with a spaCy-based fallback when it isn't.
+                                        </dd>
                                     </div>
                                     <div>
                                         <dt>Interfaces</dt>
-                                        <dd>A FastAPI service, a Streamlit app, and a command-line tool, with unit
-                                            tests and a Dockerfile.</dd>
+                                        <dd>A FastAPI service, a Streamlit app, and a command-line tool, with unit tests
+                                            and a Dockerfile.</dd>
                                     </div>
                                 </dl>
                             </details>
@@ -409,31 +459,20 @@
                                 <a class="text-link" href="https://github.com/Gunavardhan22/pulsegen-pma"
                                     target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </li>
 
-                    <!-- 4. Gemini chatbot -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <rect x="10" y="10" width="56" height="18" rx="8" fill="#fff" stroke="#C9D8F6"
-                                    stroke-width="2" />
-                                <rect x="18" y="17" width="34" height="4" rx="2" fill="#C9D8F6" />
-                                <rect x="50" y="34" width="60" height="20" rx="8" fill="#2868E8" />
-                                <rect x="58" y="42" width="38" height="4" rx="2" fill="#fff" />
-                                <circle cx="22" cy="46" r="3" fill="#42B8E8" />
-                                <circle cx="31" cy="46" r="3" fill="#42B8E8" opacity=".6" />
-                                <circle cx="40" cy="46" r="3" fill="#42B8E8" opacity=".3" />
-                            </svg>
-                            <span class="project-status">Prototype · runs locally</span>
-                        </div>
-                        <div class="project-body">
+                    <!-- Gemini chatbot -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">05</span>
+                                <span class="project-status">Prototype · runs locally</span>
+                            </header>
                             <p class="project-cat">LLM application · Backend</p>
                             <h3>Gemini-Powered Chatbot</h3>
-                            <p class="project-problem"><span>Problem</span> A useful assistant needs to remember the
-                                conversation and fail gracefully when the model call doesn't work.</p>
                             <p>A Flask web app with a <code>/chat</code> endpoint backed by a Gemini chat session that
-                                keeps conversation history.</p>
+                                remembers the conversation and fails gracefully when the model call doesn't work.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
                                 <li class="tag">Python</li>
                                 <li class="tag">Flask</li>
@@ -445,8 +484,8 @@
                                 <dl>
                                     <div>
                                         <dt>How it works</dt>
-                                        <dd>Browser → Flask <code>/chat</code> → input check → Gemini chat session
-                                            with history → reply, with error handling around the model call.</dd>
+                                        <dd>Browser → Flask <code>/chat</code> → input check → Gemini chat session with
+                                            history → reply, with error handling around the model call.</dd>
                                     </div>
                                     <div>
                                         <dt>Next steps</dt>
@@ -459,34 +498,20 @@
                                 <a class="text-link" href="https://github.com/Gunavardhan22/chatbot-powered-by-gemini"
                                     target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </li>
 
-                    <!-- 5. Coffee House -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <path d="M30 22h34v18a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14V22z" fill="#fff"
-                                    stroke="#2868E8" stroke-width="2.5" />
-                                <path d="M64 27h5a6 6 0 0 1 0 12h-5" fill="none" stroke="#2868E8" stroke-width="2.5" />
-                                <path d="M40 8c-3 4 3 6 0 10M50 8c-3 4 3 6 0 10" fill="none" stroke="#C9D8F6"
-                                    stroke-width="2.5" stroke-linecap="round" />
-                                <rect x="82" y="14" width="28" height="36" rx="5" fill="#fff" stroke="#C9D8F6"
-                                    stroke-width="2" />
-                                <rect x="88" y="22" width="16" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="88" y="29" width="12" height="3" rx="1.5" fill="#C9D8F6" />
-                                <rect x="88" y="39" width="16" height="5" rx="2.5" fill="#2868E8" />
-                            </svg>
-                            <span class="project-status">In progress</span>
-                        </div>
-                        <div class="project-body">
+                    <!-- Coffee House -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">06</span>
+                                <span class="project-status">In progress</span>
+                            </header>
                             <p class="project-cat">Full stack · Web</p>
                             <h3>Come With Me For A Cup Of Coffee</h3>
-                            <p class="project-problem"><span>Problem</span> A small café needs an online menu where
-                                customers can customise drinks and place an order.</p>
-                            <p>A React and TypeScript storefront with coffee, matcha, and dessert menus, drink
-                                customisation, a cart, and checkout, backed by Supabase tables for menus and orders.
-                            </p>
+                            <p>A React and TypeScript storefront for a café: coffee, matcha, and dessert menus, drink
+                                customisation, a cart, and checkout, backed by Supabase tables for menus and orders.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
                                 <li class="tag">React</li>
                                 <li class="tag">TypeScript</li>
@@ -498,27 +523,36 @@
                                     href="https://github.com/Gunavardhan22/Come-With-Me-For-A-Cup-Of-Coffee"
                                     target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </li>
 
-                    <!-- 6. Electricity forecasting -->
-                    <article class="card card--hover project-card reveal">
-                        <div class="project-preview" aria-hidden="true">
-                            <svg viewBox="0 0 120 64">
-                                <path d="M8 52h104" stroke="#E4E9F1" stroke-width="2" />
-                                <path d="M8 44l14-10 12 6 14-16 12 8 12-12" fill="none" stroke="#2868E8"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M72 20l14 6 12-10 14 4" fill="none" stroke="#42B8E8" stroke-width="2.5"
-                                    stroke-dasharray="4 4" stroke-linecap="round" />
-                                <circle cx="72" cy="20" r="3.5" fill="#2868E8" />
-                            </svg>
-                            <span class="project-status">Academic project</span>
-                        </div>
-                        <div class="project-body">
+                    <!-- Student Management System -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">07</span>
+                                <span class="project-status">No public repo yet</span>
+                            </header>
+                            <p class="project-cat">Backend · Java</p>
+                            <h3>Student Management System</h3>
+                            <p>A Java application that manages student records in a MySQL database through JDBC.</p>
+                            <ul class="tag-list tag-list--mono" aria-label="Technologies">
+                                <li class="tag">Java</li>
+                                <li class="tag">JDBC</li>
+                                <li class="tag">MySQL</li>
+                            </ul>
+                        </article>
+                    </li>
+
+                    <!-- Electricity forecasting -->
+                    <li class="project-item">
+                        <article class="glass project-card">
+                            <header class="project-top">
+                                <span class="project-num" aria-hidden="true">08</span>
+                                <span class="project-status">Academic project</span>
+                            </header>
                             <p class="project-cat">Machine learning · Time series</p>
                             <h3>Electricity Consumption Forecasting</h3>
-                            <p class="project-problem"><span>Problem</span> Planning electricity supply needs a
-                                reasonable forecast of upcoming consumption.</p>
                             <p>A stacked LSTM with dropout trained on scaled weekly windows of consumption data,
                                 evaluated with RMSE on a chronological train/test split.</p>
                             <ul class="tag-list tag-list--mono" aria-label="Technologies">
@@ -531,11 +565,11 @@
                                 <a class="text-link" href="https://github.com/Gunavardhan22/Ml-power--pre."
                                     target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>
                             </div>
-                        </div>
-                    </article>
-                </div>
+                        </article>
+                    </li>
+                </ul>
 
-                <p class="more-work reveal">
+                <p class="more-work" data-reveal>
                     More work on <a href="https://github.com/Gunavardhan22" target="_blank"
                         rel="noopener noreferrer">GitHub ↗</a>
                 </p>
@@ -543,168 +577,169 @@
         </section>
 
         <!-- ========== GenAI workflow ========== -->
-        <section class="section section--alt" id="workflow" aria-labelledby="workflow-title">
+        <section class="section" id="workflow" aria-labelledby="workflow-title">
             <div class="container">
-                <div class="section-head reveal">
+                <div class="section-head" data-reveal>
                     <p class="section-label">Workflow</p>
                     <h2 class="section-title" id="workflow-title">How a GenAI application works.</h2>
                     <p class="section-intro">Two general architecture patterns I design around. They aren't a claim
                         that every project above implements every step.</p>
                 </div>
 
-                <div class="flow-block reveal">
+                <div class="glass flow-block" data-reveal>
                     <h3 class="flow-title">Typical LLM application</h3>
                     <ol class="flow">
-                        <li class="flow-step">
-                            <span class="flow-num">01</span>
+                        <li class="flow-step"><span class="flow-num">01</span>
                             <h4>User input</h4>
                             <p>Start from the task the user needs done.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">02</span>
+                        <li class="flow-step"><span class="flow-num">02</span>
                             <h4>Input validation</h4>
                             <p>Check length, type, and intent first.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">03</span>
+                        <li class="flow-step"><span class="flow-num">03</span>
                             <h4>Prompt or retrieval</h4>
                             <p>Build the prompt from instructions and context.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">04</span>
+                        <li class="flow-step"><span class="flow-num">04</span>
                             <h4>Model / API call</h4>
                             <p>Server-side, with the key kept secret.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">05</span>
+                        <li class="flow-step"><span class="flow-num">05</span>
                             <h4>Output validation</h4>
                             <p>Parse against a schema and check the claims.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">06</span>
+                        <li class="flow-step"><span class="flow-num">06</span>
                             <h4>Response</h4>
                             <p>A clear answer, or a safe fallback.</p>
                         </li>
                     </ol>
                 </div>
 
-                <div class="flow-block reveal">
+                <div class="glass flow-block" data-reveal>
                     <h3 class="flow-title">Retrieval-augmented generation (RAG)</h3>
-                    <ol class="flow flow--rag">
-                        <li class="flow-step">
-                            <span class="flow-num">01</span>
+                    <ol class="flow">
+                        <li class="flow-step"><span class="flow-num">01</span>
                             <h4>Question</h4>
                             <p>What the user wants to know.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">02</span>
+                        <li class="flow-step"><span class="flow-num">02</span>
                             <h4>Embedding</h4>
                             <p>Turn the question into a vector.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">03</span>
+                        <li class="flow-step"><span class="flow-num">03</span>
                             <h4>Document retrieval</h4>
                             <p>Find the most relevant chunks.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">04</span>
+                        <li class="flow-step"><span class="flow-num">04</span>
                             <h4>Grounded prompt</h4>
                             <p>Answer only from those sources.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">05</span>
+                        <li class="flow-step"><span class="flow-num">05</span>
                             <h4>LLM response</h4>
                             <p>Generate the answer with citations.</p>
                         </li>
-                        <li class="flow-step">
-                            <span class="flow-num">06</span>
+                        <li class="flow-step"><span class="flow-num">06</span>
                             <h4>Citation and output checks</h4>
                             <p>Every claim traces to a source.</p>
                         </li>
                     </ol>
                 </div>
 
-                <ul class="tradeoffs reveal" aria-label="Design trade-offs">
-                    <li><strong>RAG vs. whole document</strong> Retrieval keeps prompts small and answers
-                        traceable, but only if retrieval finds the right chunks.</li>
-                    <li><strong>Quality vs. latency and cost</strong> A larger model isn't always worth the wait or
-                        the bill. Measure before choosing.</li>
-                    <li><strong>Confidence vs. evidence</strong> A confident answer isn't a correct one. Evaluate with
-                        test cases before trusting it.</li>
+                <ul class="tradeoffs" aria-label="Design trade-offs">
+                    <li class="glass" data-reveal><strong>RAG vs. whole document</strong> Retrieval keeps prompts small
+                        and answers traceable, but only if retrieval finds the right chunks.</li>
+                    <li class="glass" data-reveal><strong>Quality vs. latency and cost</strong> A larger model isn't
+                        always worth the wait or the bill. Measure before choosing.</li>
+                    <li class="glass" data-reveal><strong>Confidence vs. evidence</strong> A confident answer isn't a
+                        correct one. Evaluate with test cases before trusting it.</li>
                 </ul>
             </div>
         </section>
 
-        <!-- ========== Journey ========== -->
+        <!-- ========== Education & certifications ========== -->
         <section class="section" id="journey" aria-labelledby="journey-title">
             <div class="container">
-                <div class="section-head reveal">
-                    <p class="section-label">Journey</p>
-                    <h2 class="section-title" id="journey-title">Education and learning journey</h2>
+                <div class="section-head" data-reveal>
+                    <p class="section-label">Education</p>
+                    <h2 class="section-title" id="journey-title">Education, certifications, and learning journey.</h2>
+                </div>
+
+                <div class="journey-grid">
+                    <article class="glass edu-card" data-reveal>
+                        <span class="edu-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z" /><path d="M6 12v5c3 2.5 9 2.5 12 0v-5" /></svg>
+                        </span>
+                        <p class="timeline-date">2022 – 2026</p>
+                        <h3>B.Tech in Computer Science and Engineering</h3>
+                        <p>SRM Institute of Science and Technology, Chennai</p>
+                    </article>
+
+                    <article class="glass cert-card" data-reveal>
+                        <h3>Certifications</h3>
+                        <ul class="cert-list">
+                            <li>Python Programming</li>
+                            <li>Artificial Intelligence and Machine Learning</li>
+                            <li>SQL and Database Management</li>
+                            <li>Full Stack Development</li>
+                        </ul>
+                    </article>
                 </div>
 
                 <ol class="timeline">
-                    <li class="card timeline-item timeline-item--now reveal">
+                    <li class="glass timeline-item timeline-item--now">
                         <p class="timeline-meta"><span class="timeline-date">Now</span><span
                                 class="timeline-kind">Learning</span></p>
-                        <h3>Current focus: RAG, evaluation, and explainability</h3>
-                        <p>Studying retrieval-augmented generation, output evaluation, and SHAP. This is learning,
+                        <h3>Current focus: evaluation, explainability, and the cloud</h3>
+                        <p>Studying LLM output evaluation, SHAP explanations, and AWS fundamentals. This is learning,
                             not work experience.</p>
                     </li>
-                    <li class="card timeline-item reveal">
+                    <li class="glass timeline-item">
                         <p class="timeline-meta"><span class="timeline-date">2025 – 2026</span><span
                                 class="timeline-kind">Projects</span></p>
                         <h3>Explainable IDS, documentation extractor, and Coffee House</h3>
                         <p>Deep learning with explainability, an NLP pipeline behind an API, and a full-stack web
                             app.</p>
                     </li>
-                    <li class="card timeline-item reveal">
+                    <li class="glass timeline-item">
                         <p class="timeline-meta"><span class="timeline-date">2025</span><span
                                 class="timeline-kind">Projects</span></p>
                         <h3>Gemini chatbot and electricity forecasting</h3>
-                        <p>A first LLM-powered web app, and an LSTM forecasting model built as an academic project.
-                        </p>
-                    </li>
-                    <li class="card timeline-item reveal">
-                        <p class="timeline-meta"><span class="timeline-date">2022 – 2026</span><span
-                                class="timeline-kind">Education</span></p>
-                        <h3>B.Tech in Computer Science and Engineering</h3>
-                        <p>SRM Institute of Science and Technology</p>
+                        <p>A first LLM-powered web app, and an LSTM forecasting model built as an academic project.</p>
                     </li>
                 </ol>
             </div>
         </section>
 
         <!-- ========== Contact ========== -->
-        <section class="section section--alt" id="contact" aria-labelledby="contact-title">
+        <section class="section section--contact" id="contact" aria-labelledby="contact-title">
             <div class="container">
-                <div class="card contact-panel reveal">
+                <div class="glass contact-panel">
                     <div class="contact-copy">
                         <p class="section-label">Contact</p>
-                        <h2 class="section-title" id="contact-title">Let's talk about entry-level software and GenAI
-                            roles.</h2>
-                        <p class="section-intro">Based in Hyderabad, India. I'm happy to discuss my projects, an open
-                            role, or anything in this portfolio.</p>
+                        <h2 class="section-title" id="contact-title">Let's build something together.</h2>
+                        <p class="section-intro">Based in Hyderabad, India. I'm happy to talk about an open role, my
+                            projects, or anything on this page.</p>
                     </div>
 
                     <div class="contact-actions">
                         <div class="email-row">
                             <a class="email-link" id="email-link"
                                 href="mailto:gunavardhanguna315@gmail.com">gunavardhanguna315@gmail.com</a>
-                            <button class="btn btn--primary" id="copy-email" type="button"
+                            <button class="btn btn--primary btn--sm" id="copy-email" type="button"
                                 data-email="gunavardhanguna315@gmail.com">Copy email</button>
                         </div>
                         <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
 
                         <ul class="contact-links">
-                            <li><a class="btn btn--secondary" href="https://github.com/Gunavardhan22" target="_blank"
+                            <li><a class="btn btn--glass" href="https://github.com/Gunavardhan22" target="_blank"
                                     rel="noopener noreferrer">GitHub ↗</a></li>
                             <!-- LinkedIn: add once the real profile URL is confirmed
-                            <li><a class="btn btn--secondary" href="https://www.linkedin.com/in/PROFILE" target="_blank"
+                            <li><a class="btn btn--glass" href="https://www.linkedin.com/in/PROFILE" target="_blank"
                                     rel="noopener noreferrer">LinkedIn ↗</a></li>
                             -->
-                            <li><a class="btn btn--secondary" href="assets/resume.pdf" download>Download Résumé</a>
-                            </li>
+                            <li><a class="btn btn--glass" href="assets/resume.pdf"
+                                    download="Gunavardhan_Tigulla_Resume.pdf">Download Résumé</a></li>
                         </ul>
                     </div>
                 </div>
@@ -715,97 +750,95 @@
     <!-- ========== Footer ========== -->
     <footer class="site-footer">
         <div class="container footer-inner">
-            <p>© <span id="year">2026</span> Gunavardhan Tigulla</p>
+            <p>© <span id="year">2026</span> Tigulla Gunavardhan</p>
             <a class="text-link" href="#hero">Back to top ↑</a>
         </div>
     </footer>
 
-    <!-- Floating back-to-top (bottom-right, clear of the voice assistant) -->
+    <!-- Back to top (bottom-left, clear of the voice dock) -->
     <a class="to-top" id="to-top" href="#hero" aria-label="Back to top">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 19V5m0 0-6 6m6-6 6 6" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 19V5m0 0-6 6m6-6 6 6" />
         </svg>
     </a>
 
-    <!-- ========== Voice assistant (bottom-left) ========== -->
-    <div class="voice" id="voice">
-        <section class="voice-panel" id="voice-panel" role="dialog" aria-modal="false"
-            aria-labelledby="voice-title" aria-describedby="voice-desc" hidden>
-            <header class="voice-head">
-                <span class="voice-avatar" aria-hidden="true">G.</span>
+    <!-- ========== Voice dock (bottom-right) ========== -->
+    <div class="voice-dock" id="voice-dock">
+        <section class="glass ask-panel" id="ask-panel" role="dialog" aria-modal="false" aria-labelledby="ask-title"
+            hidden>
+            <header class="ask-head">
                 <div>
-                    <h2 class="voice-title" id="voice-title">Meet Gunavardhan</h2>
-                    <p class="voice-sub">Your personal portfolio introduction</p>
+                    <h2 class="ask-title" id="ask-title">Ask About Me</h2>
+                    <p class="ask-sub" id="ask-sub">Answers come only from my portfolio, and are read aloud.</p>
                 </div>
-                <button class="voice-close" id="voice-close" type="button" aria-label="Close voice assistant">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" />
-                    </svg>
+                <button class="icon-btn" id="ask-close" type="button" aria-label="Close">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
                 </button>
             </header>
 
-            <div class="voice-body">
-                <div class="voice-wave" aria-hidden="true">
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                </div>
+            <div class="ask-body">
+                <p class="ask-notice" id="ask-notice" hidden></p>
+                <div class="ask-log" id="ask-log"></div>
 
-                <p class="voice-desc" id="voice-desc">A spoken introduction of about four minutes: who I am, what I
-                    build, my projects, and the roles I'm looking for.</p>
-
-                <div class="voice-status-row">
-                    <span class="voice-state" id="voice-state" data-state="idle">Ready</span>
-                    <p class="voice-status" id="voice-status" role="status" aria-live="polite">Ready to speak</p>
-                </div>
-                <p class="voice-progress" id="voice-progress"></p>
-
-                <button class="btn btn--primary voice-play" id="voice-play" type="button">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor" />
-                    </svg>
-                    Listen to My Introduction
-                </button>
-
-                <div class="voice-controls" role="group" aria-label="Playback controls">
-                    <button class="voice-btn" id="voice-pause" type="button" disabled>Pause</button>
-                    <button class="voice-btn" id="voice-stop" type="button" disabled>Stop</button>
-                    <button class="voice-btn" id="voice-replay" type="button" disabled>Replay</button>
-                </div>
-
-                <fieldset class="voice-speed">
-                    <legend>Speaking speed</legend>
-                    <label><input type="radio" name="voice-speed" value="0.85"><span>0.85×</span></label>
-                    <label><input type="radio" name="voice-speed" value="1" checked><span>1×</span></label>
-                    <label><input type="radio" name="voice-speed" value="1.15"><span>1.15×</span></label>
-                </fieldset>
-
-                <details class="voice-transcript" id="voice-transcript">
-                    <summary>Read the full transcript</summary>
-                    <div class="voice-transcript-body" id="voice-transcript-body" tabindex="0"
-                        aria-label="Introduction transcript">
-                        <noscript>
-                            <p>The transcript needs JavaScript. You can read about me in the About section.</p>
-                        </noscript>
+                <div class="ask-chat" id="ask-chat" hidden>
+                    <ul class="ask-suggestions" aria-label="Suggested questions">
+                        <li><button type="button" class="chip" data-question="What are his strongest technical skills?">Strongest skills</button></li>
+                        <li><button type="button" class="chip" data-question="Tell me about the intrusion detection project.">Intrusion detection project</button></li>
+                        <li><button type="button" class="chip" data-question="What has he built with LangGraph and RAG?">LangGraph &amp; RAG</button></li>
+                        <li><button type="button" class="chip" data-question="What kind of role is he looking for?">Roles he wants</button></li>
+                    </ul>
+                    <form class="ask-form" id="ask-form">
+                        <label class="sr-only" for="ask-input">Your question about Gunavardhan</label>
+                        <input class="ask-input" id="ask-input" name="question" type="text" minlength="3"
+                            maxlength="300" required autocomplete="off" placeholder="Ask about skills, projects, education…">
+                        <button class="btn btn--primary btn--sm" id="ask-submit" type="submit">Ask</button>
+                    </form>
+                    <div class="ask-row">
+                        <p class="ask-status" id="ask-status" role="status" aria-live="polite"></p>
+                        <button class="text-btn" id="ask-stop" type="button" hidden>Stop speaking</button>
                     </div>
-                </details>
+                </div>
 
-                <p class="voice-engine" id="voice-engine"></p>
+                <details class="ask-transcript" id="intro-transcript">
+                    <summary>Read the introduction</summary>
+                    <div class="ask-transcript-body" id="intro-transcript-body" tabindex="0"
+                        aria-label="Introduction transcript"></div>
+                </details>
             </div>
         </section>
 
-        <button class="voice-launcher" id="voice-launcher" type="button" aria-expanded="false"
-            aria-controls="voice-panel">
-            <span class="voice-launcher-icon" aria-hidden="true">🎙</span>
-            <span class="voice-launcher-label">Hear About Me</span>
-            <span class="voice-launcher-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-            <span class="voice-launcher-badge" id="voice-launcher-badge"></span>
-        </button>
+        <div class="dock-row">
+            <button class="dock-ask glass" id="ask-toggle" type="button" aria-expanded="false" aria-controls="ask-panel"
+                hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-.9.8-.9 1.4v.3M12 16.5h.01" /></svg>
+                <span>Ask About Me</span>
+            </button>
+
+            <div class="fab-wrap">
+                <button class="voice-fab" id="voice-fab" type="button" data-intro-toggle aria-pressed="false"
+                    aria-describedby="voice-tip">
+                    <span class="voice-fab-icon" aria-hidden="true">
+                        <svg class="icon-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
+                        <svg class="icon-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" /></svg>
+                    </span>
+                    <span class="voice-fab-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                    <span class="voice-fab-label" data-intro-label data-idle="Listen" data-active="Stop Introduction"
+                        data-stopped="Play again">Listen</span>
+                </button>
+                <span class="voice-tip" id="voice-tip" role="tooltip">Listen to my introduction</span>
+            </div>
+        </div>
+        <p class="sr-only" id="voice-live" role="status" aria-live="polite"></p>
     </div>
 
-    <script src="content/about-me.js"></script>
-    <script src="script.js"></script>
-    <script src="voice-assistant.js"></script>
+    <script src="assets/vendor/gsap.min.js" defer></script>
+    <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+    <script src="content/intro.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="js/ambient.js" defer></script>
+    <script src="js/motion.js" defer></script>
+    <script src="js/voice-dock.js" defer></script>
+    <script src="js/scene.js" defer></script>
 </body>
 
 </html>

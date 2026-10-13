@@ -1,49 +1,47 @@
 # Testing checklist
 
-Results from local testing on 2026-10-10. Tests ran in headless Chromium against `node server/server.js` with three configurations: no key, a real key (provider failing on terms), and a pre-filled test audio cache.
+Run `npm start`, open <http://localhost:3000>, and run `npm run check` (syntax-checks every JavaScript file).
 
-Legend: ✅ verified · ⏳ owner action needed · ☐ needs a human or a deployment
+Verified on 2026-10-13 in headless Chromium at 1920×1080, 1440×900, 1280×800, 768×1024, 390×844, and 360×740. The speech checks used a recording stand-in for `speechSynthesis`, because headless browsers have no voices; listen once in a real browser before launch.
 
-## Layout and scrolling
+## Background and scrolling
 
-- ✅ No horizontal overflow at 320, 375, 768, 1024, 1440px. The header never overflows
-- ✅ Hamburger menu below 900px (six links). It toggles `aria-expanded` and closes on link click, Escape, outside click, and resize
-- ✅ Nav links scroll smoothly and land below the sticky header (Skills top at 84px with a 68px header). The URL hash updates
-- ✅ Progress bar: `scaleX(0)` at the top, about 0.22 at Skills, `scaleX(1)` at the bottom. One passive scroll listener, batched with rAF, and offsets measured only on resize or layout change
-- ✅ Active nav follows scrolling (Skills → … → Contact at the bottom) with `aria-current="location"`. It's a pure function of scroll position, so it can't flicker
-- ✅ Back-to-top is hidden near the top, shows after 600px, and returns to 0. It sits bottom-right and never overlaps the bottom-left launcher (checked at all widths)
-- ✅ Reveal animations: all `.reveal` elements are visible after scrolling, content is visible without JS (`html.js-reveal` gate), and reduced motion shows everything with no animation
-- ✅ No console errors or failed requests on load
+- [x] The background image is fixed and covers the viewport in every section (About, Skills, Projects, Workflow, Education, Contact).
+- [x] The veil deepens after the hero; the image stays visible.
+- [x] WebGL particles and glass panels render; with WebGL blocked, `html.no-webgl` shows the CSS dust.
+- [x] The hero recedes on scroll and returns fully (opacity 1) when scrolling back to the top.
+- [x] Project cards hide again when scrolling back above them (animations reverse).
+- [x] No horizontal overflow at any tested width. The hero name fits at every width.
+- [x] Reduced motion: all 33 animated elements are visible with no transforms, and the background doesn't move.
 
-## Voice assistant
+## Spoken introduction
 
-- ✅ Launcher bottom-left. The panel opens and closes, `aria-expanded` syncs, focus moves to the play button, and Escape closes the panel and returns focus to the launcher
-- ✅ Transcript renders all 7 parts from `content/about-me.js`, scrolls independently, and highlights the current part with a "Now playing" text label
-- ✅ Nothing plays on page load
-- ✅ **AI path** (test audio cache): play → *Playing introduction*, pause → *Playback paused* (position holds), resume, speed 1.15×, runs through all 26 segments to *Finished*, replay restarts, stop stays stopped
-- ✅ **Provider failing** (real key, terms not accepted): the server returns 502 `voice_unavailable`, and the panel switches to the browser voice with "The AI voice is unavailable right now, so your browser's voice is continuing."
-- ✅ **No server / no key**: the manifest reports unavailable and the browser voice reads the same text
-- ✅ Pause, resume, stop, and speed work on the browser voice too
-- ✅ Only one session at a time: start, stop, and replay cancel earlier audio, speech, and in-flight downloads
-- ✅ Status uses text plus icon (`aria-live="polite"`), not colour alone
-- ✅ Mobile (320×640): the panel stays within the viewport (12px gutters), and the transcript has its own scroll area
-- ☐ Listen to the real Orpheus audio once the terms are accepted (blocker #1)
-- ☐ Test on a real iPhone (Safari audio unlock) and Android
+- [x] Nothing plays on load.
+- [x] The first click speaks the first paragraph of `content/intro.js`, with the Indian English natural voice picked when present.
+- [x] While speaking: `aria-pressed="true"`, wave animation, label and tooltip read "Stop Introduction".
+- [x] A second click stops immediately (`speechSynthesis.cancel()`). The state becomes "stopped" and the label reads "Play again".
+- [x] Starting again (from either button) restarts from the first paragraph.
+- [x] Rapid double-clicks never produce overlapping speech (at most one utterance active).
+- [x] A full run speaks all 7 chunks in order and returns to idle on its own.
+- [x] Esc stops speech. `pagehide` cancels speech.
+- [x] Without speech synthesis, the button reads "Read introduction" and opens the transcript (5 paragraphs), with a notice.
 
-## Server security
+## Ask About Me
 
-- ✅ Allowlist: `/.env`, `/.env.example`, `/package.json`, `/server/*`, `/legacy/*`, `/docs/*`, `/.cache/*`, `/assets/../.env`, `/assets/%2e%2e/.env`, and `/assets/..%5c.env` all return 404
-- ✅ The key prefix appears in 0 served responses. Only `.env` (git-ignored) contains it
-- ✅ `/api/voice/segment/999` and `/abc` return 404. POST returns 405. Without a key: 503 `voice_not_configured`
-- ✅ CSP, nosniff, X-Frame-Options, and Referrer-Policy headers are present. No CSP violations in the console
-- ✅ Provider errors are logged as category and status only, plus an operator hint for `model_terms_required`
+- [x] Hidden when the page is served without this server (static host); the introduction still works.
+- [x] `GET /api/ask/status` → `{"available":true}` with a key.
+- [x] Real answers are grounded in `content/profile.md`; "experience at Google?" → "not aware… email him"; a prompt-injection attempt is refused.
+- [x] Answers are read aloud, the dock shows "Stop speaking", and the Stop button and Esc stop them.
+- [x] Validation: a 2-character question → 400, a non-JSON body → 415, GET → 405, a 3 KB body → 413.
 
-## Content
+## Security
 
-- ⏳ Résumé PDF, LinkedIn URL, Resume Analyzer repo, and degree status (see `content-inventory.md`)
-- ✅ No fabricated metrics. Prototypes and academic work are labelled as such
+- [x] `.env`, `content/profile.md`, `server/`, `package.json`, `../` and `%2e%2e` traversal → 404.
+- [x] The API key appears in no served file.
+- [x] CSP `script-src 'self'`: all scripts load (three.js and GSAP are vendored), with no CSP violations in the console.
 
-## Launch
+## Still to check by hand
 
-- ☐ Deploy (README → Deploy), fill the voice cache, and test the public URL
-- ☐ Add canonical, `og:url`, and `og:image`. Run Lighthouse
+- [ ] Listen to the introduction in Chrome, Edge, Safari, and Firefox (voices differ per OS).
+- [ ] Ask About Me on a deployed host with `TRUST_PROXY=1`.
+- [ ] Screen reader pass (NVDA or VoiceOver): the voice dock announcements and the Ask panel.
