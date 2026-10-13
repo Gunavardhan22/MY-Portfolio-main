@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resources | Nova Reyes</title>
+  <meta name="description" content="Free 3D models, tutorials and articles on modelling, lighting and rendering by Nova Reyes.">
+  <meta name="theme-color" content="#0a0a0d">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Free 3D resources | Nova Reyes">
+  <meta property="og:description" content="Free 3D models, tutorials and articles on modelling, lighting and rendering.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" data-artist="name">Nova Reyes</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main" data-nav>
+        <a href="index.html#work">Work</a>
+        <a href="about.html">About</a>
+        <a href="resources.html" aria-current="page">Resources</a>
+        <a href="contact.html">Contact</a>
+        <button class="nav-reel" type="button" data-open-reel>
+          <span class="play-dot" aria-hidden="true"></span>Reel
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container page-head">
+      <p class="eyebrow">Resources</p>
+      <h1 class="page-title">Free stuff for 3D artists</h1>
+      <p class="lead" data-res-intro></p>
+      <nav class="jump-links" aria-label="Resource types">
+        <a href="#models">Free models</a>
+        <a href="#tutorials">Tutorials</a>
+        <a href="#posts">Articles</a>
+      </nav>
+    </div>
+
+    <section id="models" class="container about-section" aria-labelledby="models-title">
+      <h2 id="models-title" class="about-heading">Free models</h2>
+      <ul class="res-grid" data-res-models></ul>
+    </section>
+
+    <section id="tutorials" class="container about-section" aria-labelledby="tutorials-title">
+      <h2 id="tutorials-title" class="about-heading">Tutorials</h2>
+      <ul class="tut-list" data-res-tutorials></ul>
+    </section>
+
+    <section id="posts" class="container about-section" aria-labelledby="posts-title">
+      <h2 id="posts-title" class="about-heading">Articles</h2>
+      <ul class="post-list" data-res-posts></ul>
+    </section>
+
+    <section class="container cta-wrap" aria-labelledby="community-title">
+      <div class="cta-band">
+      <div>
+        <h2 id="community-title">Made something with these?</h2>
+        <p>Share it in <span data-res-discord-name>the Discord</span>. I feature community renders every month.</p>
+      </div>
+      <a class="btn btn-primary" href="https://discord.com/" target="_blank" rel="noopener" data-res-discord-link>Join the Discord</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span data-year>2026</span> <span data-artist="name">Nova Reyes</span>. All renders are my own work.</p>
+      <ul class="footer-links" data-socials></ul>
+    </div>
+  </footer>
+
+  <script src="js/data.js" defer></script>
+  <script src="js/placeholder-art.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/resources.js" defer></script>
+</body>
+</html>

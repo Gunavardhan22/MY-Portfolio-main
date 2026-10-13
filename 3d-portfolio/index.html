@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova Reyes | 3D Artist &amp; Animator</title>
+  <meta name="description" content="Portfolio of Nova Reyes, 3D artist and animator: characters, environments, product visualization and motion graphics.">
+  <meta name="theme-color" content="#0a0a0d">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nova Reyes | 3D Artist &amp; Animator">
+  <meta property="og:description" content="Characters, environments, product visualization and motion graphics.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" data-artist="name">Nova Reyes</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main" data-nav>
+        <a href="index.html#work" aria-current="page">Work</a>
+        <a href="about.html">About</a>
+        <a href="resources.html">Resources</a>
+        <a href="contact.html">Contact</a>
+        <button class="nav-reel" type="button" data-open-reel>
+          <span class="play-dot" aria-hidden="true"></span>Reel
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-stage" data-hero-stage>
+        <canvas class="hero-canvas" aria-hidden="true" data-hero-canvas></canvas>
+      </div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <p class="eyebrow" data-artist="title">3D Artist &amp; Animator</p>
+        <h1 id="hero-title" class="hero-title" data-artist="name">Nova Reyes</h1>
+        <p class="hero-tagline" data-artist="tagline">I build characters, worlds and products in 3D, from first blockout to final frame.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#work">Explore Work</a>
+          <button class="btn btn-ghost" type="button" data-open-reel>
+            <span class="play-icon" aria-hidden="true"></span>Play Showreel
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-shading" role="group" aria-label="Viewport shading" data-shading>
+        <button type="button" data-mode="render" aria-pressed="true">Render</button>
+        <button type="button" data-mode="clay" aria-pressed="false">Clay</button>
+        <button type="button" data-mode="wire" aria-pressed="false">Wire</button>
+      </div>
+      <a class="scroll-cue" href="#work" aria-label="Scroll to work"></a>
+    </section>
+
+    <section id="work" class="section" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="work-title">Selected Work</h2>
+          <p class="section-sub">Characters, environments, products and motion: personal projects and client work.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter projects by category" data-filters></div>
+        <p class="sr-only" aria-live="polite" data-filter-status></p>
+        <ul class="project-grid" data-grid></ul>
+        <noscript><p class="section-sub">Turn on JavaScript to browse the project grid.</p></noscript>
+      </div>
+    </section>
+
+    <section class="container cta-wrap" aria-labelledby="cta-title">
+      <div class="cta-band">
+      <div>
+        <h2 id="cta-title">Have a project in mind?</h2>
+        <div class="commission" data-commission></div>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="contact.html">Get in touch</a>
+        <a class="btn btn-ghost" href="about.html">About me</a>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span data-year>2026</span> <span data-artist="name">Nova Reyes</span>. All renders are my own work.</p>
+      <ul class="footer-links" data-socials></ul>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/placeholder-art.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/three-studio.js" defer></script>
+  <script src="js/hero-scene.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Nova Reyes</title>
+  <meta name="description" content="Commission Nova Reyes for 3D characters, environments, product visualization and motion graphics.">
+  <meta name="theme-color" content="#0a0a0d">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact | Nova Reyes">
+  <meta property="og:description" content="Commission status, rates and how to start a 3D project.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="index.html" data-artist="name">Nova Reyes</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main" data-nav>
+        <a href="index.html#work">Work</a>
+        <a href="about.html">About</a>
+        <a href="resources.html">Resources</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+        <button class="nav-reel" type="button" data-open-reel>
+          <span class="play-dot" aria-hidden="true"></span>Reel
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container contact-grid">
+      <div class="contact-main">
+        <p class="eyebrow">Contact</p>
+        <h1 class="page-title">Let’s make something.</h1>
+        <div class="commission" data-commission></div>
+
+        <div class="email-block">
+          <p class="mini-heading">Email</p>
+          <div class="email-row">
+            <a class="email-link" href="mailto:hello@novareyes.example" data-email-link>hello@novareyes.example</a>
+            <button class="copy-btn" type="button" data-email-copy>
+              <span class="copy-label">Copy</span><span class="copy-done" aria-hidden="true">Copied</span>
+            </button>
+          </div>
+          <p class="sr-only" role="status" data-email-status></p>
+        </div>
+
+        <form class="brief" data-brief>
+          <h2 class="contact-heading">Send a project brief</h2>
+          <p class="contact-text">Fill this in and it opens your email app with everything ready to send to <span data-brief-email>me</span>.</p>
+          <div class="field-row">
+            <label class="field">
+              <span>Your name</span>
+              <input name="name" type="text" autocomplete="name" required>
+            </label>
+            <label class="field">
+              <span>Project type</span>
+              <select name="type" required><option value="">Choose one</option></select>
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>Budget</span>
+              <select name="budget"><option value="">Choose one</option></select>
+            </label>
+            <label class="field">
+              <span>Timeline</span>
+              <input name="timeline" type="text" placeholder="e.g. Early December">
+            </label>
+          </div>
+          <label class="field">
+            <span>About the project</span>
+            <textarea name="message" rows="5" required placeholder="What are you making, what do you need from me, and where will it be used?"></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Open in email app</button>
+        </form>
+      </div>
+
+      <aside class="contact-side">
+        <section aria-labelledby="social-title">
+          <h2 id="social-title" class="contact-heading">Elsewhere</h2>
+          <ul class="social-list" data-social-cards></ul>
+        </section>
+        <section class="discord" data-discord></section>
+      </aside>
+    </div>
+
+    <section class="container rate-sheet" aria-labelledby="rates-title" data-rates></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span data-year>2026</span> <span data-artist="name">Nova Reyes</span>. All renders are my own work.</p>
+      <ul class="footer-links" data-socials></ul>
+    </div>
+  </footer>
+
+  <script src="js/data.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/contact.js" defer></script>
+</body>
+</html>
