@@ -14,6 +14,19 @@ Verified on 2026-10-13 in headless Chromium at 1920×1080, 1440×900, 1280×800,
 - [x] No horizontal overflow at any tested width. The hero name fits at every width.
 - [x] Reduced motion: all 33 animated elements are visible with no transforms, and the background doesn't move.
 
+## Living portrait (2026-10-13)
+
+- [x] The still image shows first, then the WebGL portrait fades in once its first frame is drawn.
+- [x] Animating: consecutive frames 2 s apart differ (mean pixel change 0.4–0.7), so the motion is subtle.
+- [x] Pause stops the loop. The pointer parallax still eases when the pointer moves (heavy smoothing).
+- [x] Scroll push: the image changes when scrolling into the page, and returns to the start (difference 0.015) when scrolling back up.
+- [x] Controls: 44×44 px, `aria-pressed` updates, tooltips on hover and focus, Enter works, and the choice persists after a reload.
+- [x] The particles toggle hides the particle canvas and stops its loop.
+- [x] Reduced motion: starts paused on a lit still frame; scrolling doesn't move it (screenshots identical).
+- [x] No WebGL: `html.portrait-static`, and the still image keeps the same framing.
+- [x] 390×844 and 820×1180: the face sits above the hero copy, with no glass panels over it and no horizontal overflow.
+- [x] The backdrop has `pointer-events: none`; all page links and controls stay clickable.
+
 ## Spoken introduction
 
 - [x] Nothing plays on load.

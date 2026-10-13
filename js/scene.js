@@ -1,10 +1,11 @@
 /*
-   WebGL depth layer: drifting moonlit particles and floating glass panels that the
-   camera glides past as you scroll the page.
+   WebGL particle layer (the front-most atmosphere): drifting dust and floating glass
+   panels that the camera glides past as you scroll the page.
 
    - three.js (assets/vendor/three.min.js) loads only after the page is interactive.
    - Panels stay to the sides so they never sit behind the reading column.
-   - Pauses when the tab is hidden; with reduced motion it renders still frames on scroll.
+   - Pauses when the tab is hidden, when the visitor presses Pause or hides particles
+     (js/backdrop-controls.js), and with reduced motion; still frames follow the scroll.
    - No WebGL, or three.js fails to load: html.no-webgl turns on the CSS dust instead.
 */
 (() => {
@@ -80,7 +81,7 @@
         const panelMaterial = new THREE.MeshBasicMaterial({
             color: 0x9fb0ff, transparent: true, opacity: 0.05, depthWrite: false, side: THREE.DoubleSide,
         });
-        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xd6dcff, transparent: true, opacity: 0.16 });
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xd6dcff, transparent: true, opacity: 0.12 });
 
         const panels = [];
         const PANEL_COUNT = 12;
@@ -93,7 +94,7 @@
             group.scale.set(scale, scale, scale);
             const panel = {
                 group,
-                baseX: side * (4.6 + Math.random() * 3.5),
+                baseX: side * (6 + Math.random() * 3.5),
                 baseY: (Math.random() - 0.5) * 7,
                 baseRotY: -side * (0.45 + Math.random() * 0.35),
                 phase: Math.random() * Math.PI * 2,
@@ -123,9 +124,12 @@
             renderer.setSize(w, h, false);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
-            // Narrow screens see less width, so bring the panels in.
-            const squeeze = Math.min(1, Math.max(0.5, camera.aspect));
-            panels.forEach((p) => { p.group.position.x = p.baseX * squeeze; });
+            // Portrait screens: no panels, so nothing crosses the character's face.
+            const showPanels = camera.aspect >= 1;
+            panels.forEach((p) => {
+                p.group.visible = showPanels;
+                p.group.position.x = p.baseX;
+            });
         };
 
         // Frame -----------------------------------------------------------------
@@ -161,8 +165,10 @@
             draw(Math.min(clock.getDelta(), 0.05));
             frameId = window.requestAnimationFrame(tick);
         };
+        const controls = () => window.backdropState || { playing: true, particles: true };
         const sync = () => {
-            const shouldRun = !document.hidden && !reduceMotion.matches;
+            const { playing, particles } = controls();
+            const shouldRun = !document.hidden && !reduceMotion.matches && playing && particles;
             if (shouldRun === running) return;
             running = shouldRun;
             if (running) {
@@ -172,7 +178,7 @@
                 window.cancelAnimationFrame(frameId);
             }
         };
-        const drawStill = () => { if (!running) draw(0); };
+        const drawStill = () => { if (!running && controls().particles) draw(0); };
 
         window.addEventListener('scroll', () => { readScroll(); drawStill(); }, { passive: true });
         window.addEventListener('resize', () => { layout(); readScroll(); drawStill(); });
@@ -184,6 +190,7 @@
         }
         document.addEventListener('visibilitychange', sync);
         reduceMotion.addEventListener('change', () => { sync(); drawStill(); });
+        window.addEventListener('backdrop:change', () => { sync(); drawStill(); });
 
         layout();
         readScroll();

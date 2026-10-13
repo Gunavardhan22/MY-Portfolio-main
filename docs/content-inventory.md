@@ -8,7 +8,7 @@ Repository facts were checked on 2026-10-10 against the public repositories at h
 
 | # | Item | Why it blocks launch | Where to fix |
 |---|------|----------------------|--------------|
-| 1 | **Background image rights.** The moonlit character artwork (`assets/images/moonlit-*`) appears to be fan art of a copyrighted anime character. | A public, professional site needs permission to use it, or at least an artist credit. Replacing it only means swapping two image files. | `assets/images/` |
+| 1 | **Background image rights.** The portrait (`assets/portrait/`) is fan art of a copyrighted anime character. | A public, professional site needs permission to use it, or at least an artist credit. To replace it, regenerate the layers with `tools/` (see README). | `assets/portrait/` |
 | 2 | **Rotate the Groq API key.** It was pasted into a chat. | Treat it as exposed. Create a new key, put it in `.env` as `AI_API_KEY` (and in the host's environment), and delete the old one. | Groq console, `.env` |
 | 3 | **Rotate the Gemini API keys** hardcoded in `Explainable-Deep-Learning-Intrusion-Detection-System-/app1.py` and `chatbot-powered-by-gemini/Chatbot/app.py`. | The portfolio links recruiters to these repos. Load the keys from environment variables and remove them from git history. | Those two repos |
 | 4 | **Repository URLs** for the AI Resume Analyzer, Seat Seeker, and Student Management System. | Their cards have no links yet. Commented blocks are ready where useful. | `index.html` → `#projects`, `content/profile.md` |

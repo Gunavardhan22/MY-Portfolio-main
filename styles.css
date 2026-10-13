@@ -1,9 +1,9 @@
 /*
    Tigulla Gunavardhan — Portfolio
-   Dark, moonlit theme over a fixed anime background.
+   Dark, cinematic theme over a fixed, animated anime portrait.
 
    Layer order (back to front):
-   .backdrop  (fixed)  → background image → veil → moon glow → clouds → dust → WebGL canvas
+   .backdrop  (fixed)  → still image → living portrait (WebGL) → veil → CSS clouds/dust (fallbacks) → particles (WebGL)
    content    (scrolls) → header, sections, footer
    floating   (fixed)  → back-to-top (left), voice dock (right)
 */
@@ -133,13 +133,27 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
 .bg-image {
     position: absolute;
     inset: -4%;
-    background: var(--bg) url("assets/images/moonlit-bg.jpg") 50% 30% / cover no-repeat;
-    background-image: image-set(url("assets/images/moonlit-bg.webp") type("image/webp"),
-            url("assets/images/moonlit-bg.jpg") type("image/jpeg"));
-    filter: saturate(1.05) contrast(1.04);
+    /* Placeholder while the portrait loads, and the fallback without WebGL.
+       js/portrait.js sets its size and position to match the animated framing. */
+    background: var(--bg) url("assets/portrait/poster.jpg") 50% 35% / cover no-repeat;
+    background-image: image-set(url("assets/portrait/poster.webp") type("image/webp"),
+            url("assets/portrait/poster.jpg") type("image/jpeg"));
+    filter: saturate(0.95) brightness(0.86);
     transform: translate3d(var(--bg-x, 0px), var(--bg-y, 0px), 0) scale(1.03);
     will-change: transform;
 }
+
+/* Living portrait: fades in over the still image once its first frame is drawn. */
+.portrait-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.4s var(--ease);
+}
+.portrait-ready .portrait-canvas { opacity: 1; }
+.portrait-ready .clouds { display: none; } /* the shader draws its own clouds */
 
 /* Navy veil: a vignette, plus a scroll-driven layer (--veil) that deepens over the content sections. */
 .bg-veil {
@@ -153,25 +167,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(6, 8, 20, 0.62);
+    background: rgba(6, 8, 20, 0.7);
     opacity: var(--veil, 0);
-}
-
-.moon-glow {
-    position: absolute;
-    left: 47%;
-    top: -14vmin;
-    width: 70vmin;
-    height: 70vmin;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(226, 232, 255, 0.24) 0%, rgba(180, 190, 255, 0.08) 35%, transparent 65%);
-    transform: translateX(-50%);
-    animation: moon-breathe 9s ease-in-out infinite alternate;
-    mix-blend-mode: screen;
-}
-@keyframes moon-breathe {
-    from { opacity: 0.7; transform: translateX(-50%) scale(0.96); }
-    to { opacity: 1; transform: translateX(-50%) scale(1.04); }
 }
 
 .cloud {
@@ -449,13 +446,15 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
     position: absolute;
     inset: calc(var(--header-h) * -1) 0 0;
     z-index: -1;
-    background: linear-gradient(270deg, rgba(6, 8, 20, 0.86) 0%, rgba(6, 8, 20, 0.55) 32%, transparent 58%);
+    background:
+        linear-gradient(270deg, rgba(6, 8, 20, 0.9) 0%, rgba(6, 8, 20, 0.72) 30%, rgba(6, 8, 20, 0.2) 52%, transparent 64%),
+        linear-gradient(0deg, rgba(6, 8, 20, 0.7) 0%, transparent 30%);
     pointer-events: none;
 }
 
 .hero-layout { display: flex; justify-content: flex-end; }
 .hero-inner {
-    width: min(100%, 640px);
+    width: min(100%, 520px);
     transform-style: preserve-3d;
     will-change: transform, opacity;
 }
@@ -484,7 +483,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
 }
 
 .hero-title {
-    font-size: clamp(2.75rem, 6.2vw, 5.5rem);
+    font-size: clamp(2.75rem, 5.6vw, 5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.045em;
@@ -594,11 +593,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
 }
 
 @media (max-width: 899px) {
-    /* Portrait: lift the image so the face sits above the hero copy. */
-    .bg-image { background-size: auto 112%; background-position: 40% 100%; }
-    .hero { align-items: flex-end; padding-block: 36vh 96px; }
+    .hero { align-items: flex-end; padding-block: 50vh 96px; }
     .hero::before {
-        background: linear-gradient(0deg, rgba(6, 8, 20, 0.92) 0%, rgba(6, 8, 20, 0.7) 45%, transparent 75%);
+        background: linear-gradient(0deg, rgba(6, 8, 20, 0.94) 0%, rgba(6, 8, 20, 0.8) 42%, rgba(6, 8, 20, 0.25) 58%, transparent 66%);
     }
     .hero-layout { justify-content: flex-start; }
     .scroll-cue { display: none; }
@@ -989,7 +986,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
 .to-top {
     position: fixed;
     left: 20px;
-    bottom: 20px;
+    bottom: 88px;
     z-index: 50;
     display: grid;
     place-items: center;
@@ -1246,7 +1243,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
 
 @media (max-width: 560px) {
     .voice-dock { right: 12px; bottom: 12px; }
-    .to-top { left: 12px; bottom: 12px; }
+    .to-top { left: 12px; bottom: 76px; }
+    .backdrop-controls { left: 12px; bottom: 12px; }
     .dock-ask span,
     .voice-fab-label {
         position: absolute;
@@ -1260,6 +1258,82 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
     .voice-fab { padding: 8px; }
     [data-voice="speaking"] .voice-fab { padding-right: 16px; }
 }
+
+/* Background controls: play/pause and particles, 44×44 touch targets. */
+.backdrop-controls {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 50;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+}
+.ctrl-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.ctrl-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--glass-border-strong); }
+.ctrl-btn:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 50%; }
+.ctrl-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.ctrl-btn .icon-play { display: none; fill: currentColor; stroke: none; }
+.ctrl-btn[aria-pressed="false"] { color: var(--muted); }
+#motion-toggle[aria-pressed="false"] .icon-pause { display: none; }
+#motion-toggle[aria-pressed="false"] .icon-play { display: block; color: var(--violet); }
+.ctrl-slash {
+    position: absolute;
+    width: 26px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transform: rotate(-45deg) scaleX(0);
+    transition: transform 0.25s var(--ease);
+}
+#particles-toggle[aria-pressed="false"] .ctrl-slash { transform: rotate(-45deg) scaleX(1); }
+.ctrl-tip {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 10px);
+    padding: 6px 10px;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    background: rgba(13, 17, 36, 0.95);
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.ctrl-btn:hover .ctrl-tip,
+.ctrl-btn:focus-visible .ctrl-tip { opacity: 1; transform: none; }
+
+/* Paused: freeze the ambient CSS motion too. Particles off: hide both particle layers. */
+.motion-paused .cloud,
+.motion-paused .dust,
+.motion-paused .skill-card { animation-play-state: paused; }
+.particles-off .scene-canvas,
+.particles-off .dust { visibility: hidden; }
 
 /* ==========================================================================
    9. Reveal fallback (when GSAP is unavailable)

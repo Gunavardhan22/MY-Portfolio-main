@@ -1,11 +1,11 @@
 # Tigulla Gunavardhan — Portfolio
 
-A dark, moonlit portfolio with a cinematic 3D scroll experience, a spoken **About Me** introduction, and an optional **Ask About Me** assistant that answers questions from the portfolio's own content.
+A dark, cinematic portfolio with a living 2.5D anime portrait, a 3D scroll experience, a spoken **About Me** introduction, and an optional **Ask About Me** assistant that answers questions from the portfolio's own content.
 
 It's plain HTML, CSS, and JavaScript with no build step. A small dependency-free Node.js server hosts the site and keeps the AI key private.
 
 ```text
-Fixed background image → navy veil + moonlight + clouds → WebGL particles & glass panels → content → voice dock
+Still image → living portrait (WebGL) → navy veil → WebGL particles & glass panels → content → controls + voice dock
 
 Browser ── POST /api/ask {question} ──▶ Node server ── (key from .env) ──▶ Groq chat model
    ▲                                     │   answers only from content/profile.md
@@ -28,9 +28,10 @@ Without a key, everything works except the **Ask About Me** button, which stays 
 
 | Feature | Where | Notes |
 | --- | --- | --- |
-| Persistent anime background | `index.html` `.backdrop`, `styles.css` §3, `js/ambient.js` | Fixed layer behind every section. Pointer and scroll parallax, and a veil that deepens over the content for readability. |
-| Ambient effects | `styles.css` §3 | Moon glow, drifting clouds, and CSS dust when WebGL isn't available. All CSS. |
-| 3D depth layer | `js/scene.js` | three.js particles and glass panels. The camera travels forward as you scroll. Loaded after the page is interactive. Pauses in background tabs. |
+| Living portrait (2.5D) | `js/portrait.js`, `assets/portrait/` | A WebGL shader composites prepared layers (sky, clouds, body, head and hair, eye glow) with depth parallax, a hair breeze, breathing, rim light, and pulsing eyes on a seamless 10-second loop. The scroll pushes the camera in (GSAP scrub, reversible). Falls back to the still image. |
+| Background controls | `js/backdrop-controls.js` | Bottom-left glass panel: play/pause the animation, show/hide particles. 44×44 targets, remembered per device. |
+| Readability veil | `styles.css` §3, `js/ambient.js` | Gradient scrims behind the hero copy, and a navy veil that deepens over the content sections. |
+| Particles | `js/scene.js` | three.js dust and glass panels (panels are hidden on portrait screens so nothing crosses the face). The camera travels forward as you scroll. Loaded after the page is interactive. Pauses with the controls, in background tabs, and with reduced motion. |
 | Scroll animations | `js/motion.js` | GSAP ScrollTrigger. The hero recedes into depth, and sections, skills, projects, and contact animate in. All reversible when scrolling up. No scroll hijacking. |
 | Spoken introduction | `js/voice-dock.js`, `content/intro.js` | Browser speech synthesis. The floating button and the hero's "About Me — Listen" button start it, stop it, and restart it from the beginning. |
 | Ask About Me | `js/voice-dock.js`, `server/routes/ask.js`, `server/services/askService.js` | Grounded answers from `content/profile.md`, read aloud. Shown only when the server reports it's configured. |
@@ -51,13 +52,32 @@ Without a key, everything works except the **Ask About Me** button, which stays 
 | Spoken introduction | `content/intro.js` (one string per paragraph) |
 | Knowledge the assistant answers from | `content/profile.md`. It's read on every question, so no restart is needed. |
 | Page text, projects, skills | `index.html` |
-| Background image | `assets/images/moonlit-bg.webp` and `.jpg`; the supplied original is `moonlit-original.png` |
+| Background portrait | `assets/portrait/` (generated; see below) |
 
 Keep `content/profile.md` and `index.html` consistent: the assistant only knows what the profile says.
 
-### Replacing the background image
+### The living portrait
 
-The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so it looks smoother full-screen, but a higher-resolution original (at least 1920px wide) will look much sharper. Save it as `assets/images/moonlit-bg.webp` and `.jpg`. On phones, the framing that keeps the face above the text is set in `styles.css` (`@media (max-width: 899px) .bg-image`).
+`assets/portrait/` holds layers generated from the source image by two scripts in `tools/`:
+
+| File | Contents |
+| --- | --- |
+| `poster.webp` / `.jpg` | The original image: the loading placeholder and the no-WebGL fallback |
+| `sky.webp` | The background with the character removed and the hole filled, revealed by parallax |
+| `character.webp` | The character cut out with the `isnet-anime` model, with the hair fringe colour cleaned up |
+| `maps.png` | R = depth (a smooth gradient, so nothing shears), G = hair sway (tips only, never over the face), B = eye glow |
+
+To use a different image (Python 3 with `numpy`, `pillow`, `onnxruntime`):
+
+```bash
+curl -L -o isnet-anime.onnx https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-anime.onnx
+python tools/run_seg.py new-image.png isnet-anime.onnx mask.png
+python tools/build_layers.py new-image.png mask.png assets/portrait
+```
+
+Then update `IMAGE` (pixel size) and `FACE` (the face centre, as fractions of width and height) at the top of `js/portrait.js`. The eye detection region in `build_layers.py` assumes the eyes sit around 38–58% across and 40–47% down; adjust it for a different pose.
+
+Loop timing (10 s): 0–25% clouds drift and a cool rim light rises on the hair; 25–55% the eyes brighten and ease back; 45–85% a stronger breeze and gentle breathing; then idle. Every effect is periodic in the loop phase, so there's no visible reset.
 
 ## Configuration
 
@@ -78,6 +98,14 @@ The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so 
 - **Allowlisted files only:** `index.html`, `styles.css`, `script.js`, `content/intro.js`, `js/`, and `assets/`. `.env`, `server/`, `content/profile.md`, `docs/`, and `legacy/` all return 404, including `../` and encoded-traversal attempts.
 - **Headers:** a strict CSP (`script-src 'self'`; three.js and GSAP are vendored in `assets/vendor/`), `nosniff`, `X-Frame-Options: DENY`.
 
+## Performance and accessibility
+
+- The portrait is one full-screen quad and one shader (no three.js). Its pixel count is capped, and phones and tablets get a lighter shader, 1× resolution, and about 30 fps.
+- It only animates while visible and playing. When paused, it redraws only while the pointer or scroll easing settles.
+- Reduced motion: starts paused on a well-lit still frame, with no pointer or scroll parallax. Play remains available.
+- The backdrop has `pointer-events: none` and sits behind the content (`z-index: -1`). The hero copy has its own scrims for contrast.
+- On a real unload, the GPU context, textures and listeners are released; pages in the back/forward cache keep theirs.
+
 ## Project structure
 
 ```text
@@ -86,7 +114,9 @@ The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so 
 ├── styles.css               # tokens, backdrop layers, glass UI, responsive + reduced-motion rules
 ├── script.js                # menu, smooth anchors, progress bar, active nav, back-to-top, copy email
 ├── js/
-│   ├── ambient.js           # background parallax + veil depth
+│   ├── portrait.js          # living 2.5D portrait (raw WebGL, no three.js)
+│   ├── backdrop-controls.js # play/pause + particles toggles
+│   ├── ambient.js           # veil depth + still-image parallax
 │   ├── scene.js             # WebGL particles and glass panels (lazy-loads three.js)
 │   ├── motion.js            # GSAP ScrollTrigger animations, with a fallback
 │   └── voice-dock.js        # spoken introduction + Ask About Me
@@ -94,7 +124,7 @@ The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so 
 │   ├── intro.js             # the spoken introduction (edit this)
 │   └── profile.md           # the assistant's only knowledge source (edit this; not served)
 ├── assets/
-│   ├── images/              # background image (original + upscaled)
+│   ├── portrait/            # portrait layers (poster, sky, character, maps)
 │   ├── vendor/              # three.js r128, GSAP 3.12.5 + ScrollTrigger
 │   ├── resume.pdf
 │   └── favicon.svg, diagrams/
@@ -104,6 +134,7 @@ The supplied image is 500×353 pixels. It was upscaled 3× to `moonlit-bg.*` so 
 │   ├── services/askService.js, pacer.js
 │   └── lib/env.js, rateLimit.js
 ├── scripts/check.js         # npm run check
+├── tools/                   # run_seg.py, build_layers.py: regenerate the portrait layers
 ├── docs/                    # content inventory + testing checklist
 └── 3d-portfolio/            # separate 3D-artist template site
 ```
@@ -120,7 +151,7 @@ After deploying, add a canonical URL, `og:url`, and `og:image` to `index.html`.
 
 See [`docs/content-inventory.md`](docs/content-inventory.md). The main items:
 
-1. **Background image rights.** The character artwork is likely copyrighted fan art. Check that you're allowed to use it on a public site, or credit the artist.
+1. **Background image rights.** The portrait is fan art of a copyrighted anime character. Check that you're allowed to use it on a public site, or credit the artist.
 2. **Rotate the Groq key**, which was shared in a chat earlier, and update `.env`.
 3. Add the LinkedIn URL, and the AI Resume Analyzer and Seat Seeker repository URLs when they're public.
 4. Resolve the résumé/site differences listed in the inventory (SHAP vs LIME).

@@ -20,7 +20,7 @@
         content="Python, backend, and AI/ML projects, with a spoken introduction and an assistant that answers questions about my work.">
 
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="preload" href="assets/images/moonlit-bg.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/portrait/poster.webp" as="image" type="image/webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,11 +34,13 @@
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Fixed background → ambient effects → 3D scene. Content scrolls above it. -->
+    <!-- Fixed backdrop, back to front: still image (placeholder and fallback) → living portrait
+         (WebGL) → readability veil → CSS clouds and dust (fallbacks) → particles (WebGL).
+         Content scrolls above it. -->
     <div class="backdrop" aria-hidden="true">
         <div class="bg-image" id="bg-image"></div>
+        <canvas class="portrait-canvas" id="portrait-canvas"></canvas>
         <div class="bg-veil" id="bg-veil"></div>
-        <div class="moon-glow"></div>
         <div class="clouds">
             <span class="cloud cloud--1"></span>
             <span class="cloud cloud--2"></span>
@@ -755,7 +757,21 @@
         </div>
     </footer>
 
-    <!-- Back to top (bottom-left, clear of the voice dock) -->
+    <!-- Background controls (bottom-left) -->
+    <div class="backdrop-controls glass" role="group" aria-label="Background effects">
+        <button class="ctrl-btn" id="motion-toggle" type="button" aria-pressed="true" aria-label="Background animation">
+            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg>
+            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5z" /></svg>
+            <span class="ctrl-tip" aria-hidden="true">Pause animation</span>
+        </button>
+        <button class="ctrl-btn" id="particles-toggle" type="button" aria-pressed="true" aria-label="Particles">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3zM18.5 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8zM5.5 15.5l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5.5-1.2z" /></svg>
+            <span class="ctrl-slash" aria-hidden="true"></span>
+            <span class="ctrl-tip" aria-hidden="true">Hide particles</span>
+        </button>
+    </div>
+
+    <!-- Back to top (bottom-left, above the background controls) -->
     <a class="to-top" id="to-top" href="#hero" aria-label="Back to top">
         <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 19V5m0 0-6 6m6-6 6 6" />
@@ -835,9 +851,11 @@
     <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
     <script src="content/intro.js" defer></script>
     <script src="script.js" defer></script>
+    <script src="js/backdrop-controls.js" defer></script>
     <script src="js/ambient.js" defer></script>
     <script src="js/motion.js" defer></script>
     <script src="js/voice-dock.js" defer></script>
+    <script src="js/portrait.js" defer></script>
     <script src="js/scene.js" defer></script>
 </body>
 
