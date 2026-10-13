@@ -58,6 +58,8 @@
   window.Site = { $, $$, esc, categoryLabel, findProject, projectUrl, videoHTML, softwareBadge };
 
   fillArtistText();
+  renderCommission();
+  addStructuredData();
   initHeader();
   initEmbeds();
   initReel();
@@ -76,6 +78,37 @@
         .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a></li>`)
         .join('');
     }
+  }
+
+  function renderCommission() {
+    const c = data.contact && data.contact.commission;
+    if (!c) return;
+    $$('[data-commission]').forEach((el) => {
+      el.className = `commission is-${c.status}`;
+      el.innerHTML = `<span class="commission-dot" aria-hidden="true"></span>
+        <div>
+          <p class="commission-label">${esc(c.label)}</p>
+          <p class="commission-note">${esc(c.note)} ${esc(c.responseTime)}</p>
+        </div>`;
+    });
+  }
+
+  // Person schema on the home and about pages, so search engines know who the site is about.
+  function addStructuredData() {
+    const page = document.body.dataset.page;
+    if (page !== 'home' && page !== 'about') return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: data.artist.name,
+      jobTitle: data.artist.title,
+      email: `mailto:${data.artist.email}`,
+      address: data.artist.location,
+      sameAs: data.artist.socials.map((s) => s.url),
+    });
+    document.head.append(script);
   }
 
   function initHeader() {

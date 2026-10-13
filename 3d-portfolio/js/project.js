@@ -25,6 +25,10 @@
   document.title = `${project.title} | ${data.artist.name}`;
   const description = document.querySelector('meta[name="description"]');
   if (description) description.content = project.summary;
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogDescription = document.querySelector('meta[property="og:description"]');
+  if (ogTitle) ogTitle.content = document.title;
+  if (ogDescription) ogDescription.content = project.summary;
 
   // Every image that opens in the full-screen viewer, in page order.
   const viewerItems = [];
