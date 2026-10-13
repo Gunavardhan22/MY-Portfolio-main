@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 230" role="img" width="980" height="230" aria-labelledby="rag-svg-title rag-svg-desc">
+                            <title id="rag-svg-title">RAG pipeline diagram</title>
+                            <desc id="rag-svg-desc">Offline, documents are chunked, embedded, and stored in a vector
+                                index. Online, a question is embedded, relevant chunks are retrieved from the index, a
+                                grounded prompt is built, the LLM generates an answer, citations are validated, and the
+                                answer is returned.</desc>
+                            <rect width="980" height="230" fill="#FBFCFE"/>
+<defs>
+                                <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                                    markerHeight="7" orient="auto-start-reverse">
+                                    <path d="M0 0 10 5 0 10z" fill="#2868E8" />
+                                </marker>
+                            </defs>
+                            <g font-family="Manrope, system-ui, sans-serif" font-size="13" font-weight="700"
+                                fill="#172033" text-anchor="middle">
+                                <text x="20" y="22" text-anchor="start" font-family="DM Mono, monospace"
+                                    font-size="11" font-weight="500" fill="#6D788C" letter-spacing="1.5">OFFLINE ·
+                                    INDEXING</text>
+                                <g>
+                                    <rect x="20" y="34" width="130" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="85" y="62">Documents</text>
+                                    <rect x="190" y="34" width="130" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="255" y="62">Chunk</text>
+                                    <rect x="360" y="34" width="130" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="425" y="62">Embed</text>
+                                </g>
+                                <rect x="530" y="34" width="150" height="46" rx="9" fill="#EDF4FF" stroke="#2868E8" />
+                                <text x="605" y="62" fill="#164FC2">Vector index</text>
+
+                                <text x="20" y="128" text-anchor="start" font-family="DM Mono, monospace"
+                                    font-size="11" font-weight="500" fill="#6D788C" letter-spacing="1.5">ONLINE ·
+                                    ANSWERING</text>
+                                <g>
+                                    <rect x="20" y="140" width="110" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="75" y="168">Question</text>
+                                    <rect x="160" y="140" width="110" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="215" y="168">Embed query</text>
+                                    <rect x="300" y="140" width="110" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="355" y="168">Retrieve</text>
+                                    <rect x="440" y="140" width="120" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="500" y="168">Grounded prompt</text>
+                                    <rect x="590" y="140" width="100" height="46" rx="9" fill="#172033" />
+                                    <text x="640" y="168" fill="#fff">LLM</text>
+                                    <rect x="720" y="140" width="120" height="46" rx="9" fill="#fff" stroke="#E4E9F1" />
+                                    <text x="780" y="168">Check citations</text>
+                                    <rect x="870" y="140" width="90" height="46" rx="9" fill="#2868E8" />
+                                    <text x="915" y="168" fill="#fff">Answer</text>
+                                </g>
+                            </g>
+                            <g stroke="#2868E8" stroke-width="1.8" fill="none" marker-end="url(#arw)">
+                                <path d="M150 57h36" />
+                                <path d="M320 57h36" />
+                                <path d="M490 57h36" />
+                                <path d="M130 163h26" />
+                                <path d="M270 163h26" />
+                                <path d="M410 163h26" />
+                                <path d="M560 163h26" />
+                                <path d="M690 163h26" />
+                                <path d="M840 163h26" />
+                                <path d="M605 80v24H355v32" stroke-dasharray="4 4" />
+                            </g>
+                            <text x="480" y="98" font-family="DM Mono, monospace" font-size="11" fill="#6D788C"
+                                text-anchor="middle">top-k relevant chunks</text>
+                        </svg>
